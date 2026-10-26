@@ -1,0 +1,57 @@
+spring:
+  application:
+    name: iam
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP:localhost:9092}
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+  flyway:
+    enabled: false
+
+server:
+  port: ${PORT:8080}
+
+platform:
+  service-id: iam
+  outbox:
+    topic: iam.events
+  platform-db:
+    url: ${PLATFORM_DB_URL:jdbc:postgresql://localhost:5432/platform}
+    username: ${PLATFORM_DB_USER:platform_app}
+    password: ${PLATFORM_DB_PASSWORD:platform_app}
+  secrets:
+    key: ${PLATFORM_SECRET_KEY:}
+  tenant-db:
+    enabled: true
+    host: ${TENANT_DB_HOST:localhost}
+    port: ${TENANT_DB_PORT:5432}
+    migrations:
+      - schema: iam
+        location: classpath:db/tenant/iam
+  web:
+    core-service: true
+    issuer-base: ${KEYCLOAK_PUBLIC_URL:http://localhost:8180}
+    jwks-base: ${KEYCLOAK_INTERNAL_URL:http://localhost:8180}
+  keycloak:
+    url: ${KEYCLOAK_INTERNAL_URL:http://localhost:8180}
+    admin-user: ${KEYCLOAK_ADMIN_USER:admin}
+    admin-password: ${KEYCLOAK_ADMIN_PASSWORD:admin}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  health:
+    db:
+      enabled: false
+    redis:
+      enabled: false
+  tracing:
+    sampling:
+      probability: ${TRACING_SAMPLING:1.0}
+  otlp:
+    tracing:
+      endpoint: ${OTLP_TRACES_ENDPOINT:http://localhost:4318/v1/traces}

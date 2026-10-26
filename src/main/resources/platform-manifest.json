@@ -1,0 +1,22 @@
+{
+  "id": "iam",
+  "name": "Felhasználó- és jogosultságkezelés",
+  "version": "0.1.0",
+  "core": true,
+  "dependsOn": [],
+  "permissions": [
+    {"code": "iam.read", "name": "Felhasználók, csoportok, szervezeti egységek megtekintése"},
+    {"code": "iam.write", "name": "Felhasználók, csoportok, szervezeti egységek kezelése"},
+    {"code": "iam.permission.manage", "name": "Jogosultságok kiosztása"},
+    {"code": "integration.manage", "name": "Integrációk (API kliensek, webhookok) kezelése"}
+  ],
+  "menu": [
+    {"path": "iam/users", "label": "Felhasználók", "permission": "iam.read"},
+    {"path": "iam/groups", "label": "Csoportok", "permission": "iam.read"},
+    {"path": "iam/org-units", "label": "Szervezeti egységek", "permission": "iam.read"},
+    {"path": "iam/permissions", "label": "Jogosultságok", "permission": "iam.permission.manage"},
+    {"path": "iam/integrations", "label": "Integrációk", "permission": "integration.manage"}
+  ],
+  "publishes": ["iam.events"],
+  "publicApi": {"version": "v1", "basePath": "/public/v1/t/{tenant}/iam"}
+}
