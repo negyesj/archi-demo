@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Minden archi-demo erőforrás törlése a projektből (Cloud Run, VM, hálózat, titkok, image-ek, szolgáltatásfiókok).
-# Egyszerűbb, ha a teljes projektet törli:  gcloud projects delete archi-demo
+# Egyszerűbb, ha a teljes projektet törli:  gcloud projects delete archi-demo-512819
 source "$(dirname "$0")/lib.sh"
 if [ "${1:-}" != "--yes" ]; then
   read -r -p "Minden archi-demo erőforrás VÉGLEGES törlése a(z) $PROJECT_ID projektből. Folytatja? (igen/nem) " A

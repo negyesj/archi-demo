@@ -13,7 +13,7 @@ Google Cloud Shellből, a repó `main` branchének gyökeréből futtatandó szk
 | – | `98-pause.sh pause\|resume` | szüneteltetés két kipróbálás között | |
 | – | `99-teardown.sh` | minden erőforrás törlése | |
 
-Beállítások: `config.env` (projekt: `archi-demo`, régió: `europe-west1`, zóna: `europe-west1-b`). Bármelyik felülírható
+Beállítások: `config.env` (projekt: `archi-demo-512819`, régió: `europe-west1`, zóna: `europe-west1-b`). Bármelyik felülírható
 környezeti változóval, pl. `REGION=europe-west1 ./00-setup.sh`.
 
 ```bash
