@@ -6,8 +6,18 @@ REPO_ROOT="$(cd "$GCP_DIR/../.." && pwd)"
 # shellcheck source=config.env
 source "$GCP_DIR/config.env"
 
+if ! PROJECT_NUMBER=$(gcloud projects describe "$PROJECT_ID" --format='value(projectNumber)' 2>/dev/null) \
+   || [ -z "$PROJECT_NUMBER" ]; then
+  {
+    echo "A(z) '$PROJECT_ID' projekt nem érhető el a(z) '$(gcloud config get-value account 2>/dev/null)' fiókkal."
+    echo "Gyakori ok: a projekt AZONOSÍTÓJA eltér a nevétől (pl. archi-demo-123456). A valódi azonosító:"
+    gcloud projects list --format='table(projectId,name,projectNumber)' 2>/dev/null || true
+    echo "Megoldás: PROJECT_ID=<azonosító> ./$(basename "$0")   vagy írja át a config.env PROJECT_ID sorát."
+    echo "Ha a fiók rossz: gcloud auth login"
+  } >&2
+  exit 1
+fi
 gcloud config set project "$PROJECT_ID" >/dev/null 2>&1
-PROJECT_NUMBER=$(gcloud projects describe "$PROJECT_ID" --format='value(projectNumber)')
 REGISTRY="${REGION}-docker.pkg.dev/${PROJECT_ID}/${AR_REPO}"
 RUN_SA_EMAIL="${RUN_SA}@${PROJECT_ID}.iam.gserviceaccount.com"
 INFRA_SA_EMAIL="${INFRA_SA}@${PROJECT_ID}.iam.gserviceaccount.com"
