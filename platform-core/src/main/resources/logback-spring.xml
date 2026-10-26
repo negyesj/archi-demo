@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Közös naplózás: strukturált JSON a standard kimenetre (Cloud Run / Kubernetes / Compose gyűjti),
+  benne traceId, spanId, tenantId, userId (MDC) és a szolgáltatás neve.
+  Profilok: "local-text" = olvasható szöveges log fejlesztéshez, "gcp" = Cloud Logging trace mező.
+-->
+<configuration>
+  <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+  <springProperty scope="context" name="SERVICE" source="spring.application.name" defaultValue="app"/>
+  <springProperty scope="context" name="GCP_PROJECT" source="platform.gcp.project-id" defaultValue="local"/>
+
+  <springProfile name="local-text">
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+    <root level="INFO">
+      <appender-ref ref="CONSOLE"/>
+    </root>
+  </springProfile>
+
+  <springProfile name="gcp">
+    <appender name="JSON" class="ch.qos.logback.core.ConsoleAppender">
+      <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+        <providers>
+          <timestamp/>
+          <logLevel/>
+          <loggerName/>
+          <threadName/>
+          <message/>
+          <mdc/>
+          <stackTrace/>
+          <pattern>
+            <pattern>{"service":"${SERVICE}","severity":"%level","logging.googleapis.com/trace":"projects/${GCP_PROJECT}/traces/%mdc{traceId}","logging.googleapis.com/spanId":"%mdc{spanId}"}</pattern>
+          </pattern>
+        </providers>
+      </encoder>
+    </appender>
+    <root level="INFO">
+      <appender-ref ref="JSON"/>
+    </root>
+  </springProfile>
+
+  <springProfile name="!local-text &amp; !gcp">
+    <appender name="JSON" class="ch.qos.logback.core.ConsoleAppender">
+      <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+        <customFields>{"service":"${SERVICE}"}</customFields>
+      </encoder>
+    </appender>
+    <root level="INFO">
+      <appender-ref ref="JSON"/>
+    </root>
+  </springProfile>
+</configuration>

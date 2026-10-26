@@ -1,0 +1,2 @@
+hu.dmsone.archi.platform.PlatformCoreAutoConfiguration
+hu.dmsone.archi.platform.db.TenantDbAutoConfiguration
