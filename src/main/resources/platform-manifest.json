@@ -1,0 +1,15 @@
+{
+  "id": "audit",
+  "name": "Audit napló",
+  "version": "0.1.0",
+  "core": true,
+  "dependsOn": [],
+  "permissions": [
+    {"code": "audit.read", "name": "Audit napló keresése"}
+  ],
+  "menu": [
+    {"path": "audit", "label": "Audit napló", "permission": "audit.read"}
+  ],
+  "consumes": ["domain.*.events", "iam.events"],
+  "publicApi": {"version": "v1", "basePath": "/public/v1/t/{tenant}/audit"}
+}
