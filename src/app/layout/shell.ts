@@ -31,7 +31,7 @@ import { MENU } from './menu';
           <h3 class="menu-group">{{ g.label }}</h3>
           <mat-nav-list>
             @for (i of g.items; track i.path) {
-              <a mat-list-item [routerLink]="['/t', tenant()?.code, i.path]" routerLinkActive="active">
+              <a mat-list-item [routerLink]="'/t/' + tenant()?.code + '/' + i.path" routerLinkActive="active">
                 <mat-icon matListItemIcon>{{ i.icon }}</mat-icon>
                 <span matListItemTitle>{{ i.label }}</span>
               </a>

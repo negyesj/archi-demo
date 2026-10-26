@@ -16,7 +16,7 @@ import { MENU } from './menu';
     }
     <div class="tiles">
       @for (t of tiles(); track t.path) {
-        <mat-card class="tile" [routerLink]="['/t', tenant.code(), t.path]">
+        <mat-card class="tile" [routerLink]="'/t/' + tenant.code() + '/' + t.path">
           <mat-card-content><mat-icon>{{ t.icon }}</mat-icon><div>{{ t.label }}</div></mat-card-content>
         </mat-card>
       }
