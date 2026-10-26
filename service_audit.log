@@ -1,7 +1,7 @@
 branch: service/audit
-commit: 541a592366b969451cecd63d8794cad96c3a9833
+commit: 2024e7da1cafa7dfb33286e3e998d35de8eb245d
 status: success
-run: https://github.com/negyesj/archi-demo/actions/runs/40389901345
+run: https://github.com/negyesj/archi-demo/actions/runs/40391011060
 ----
 [INFO] Scanning for projects...
 [INFO] Loaded 24251 auto-discovered prefixes for remote repository central (prefixes-central.txt)
@@ -122,16 +122,16 @@ run: https://github.com/negyesj/archi-demo/actions/runs/40389901345
 [INFO] ------------------------------------------------------------------------
 [INFO] Reactor Summary for Platform shared libraries (aggregator) 0.1.0-SNAPSHOT:
 [INFO] 
-[INFO] Platform parent POM ................................ SUCCESS [  1.352 s]
-[INFO] platform-core ...................................... SUCCESS [  4.192 s]
-[INFO] platform-web ....................................... SUCCESS [  1.102 s]
-[INFO] platform-reporting ................................. SUCCESS [  0.362 s]
-[INFO] Platform shared libraries (aggregator) ............. SUCCESS [  0.055 s]
+[INFO] Platform parent POM ................................ SUCCESS [  2.773 s]
+[INFO] platform-core ...................................... SUCCESS [  4.452 s]
+[INFO] platform-web ....................................... SUCCESS [  1.010 s]
+[INFO] platform-reporting ................................. SUCCESS [  0.431 s]
+[INFO] Platform shared libraries (aggregator) ............. SUCCESS [  0.066 s]
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time:  8.422 s
-[INFO] Finished at: 2026-10-26T19:50:37Z
+[INFO] Total time:  9.719 s
+[INFO] Finished at: 2026-10-26T19:57:03Z
 [INFO] ------------------------------------------------------------------------
 [INFO] Scanning for projects...
 [INFO] Loaded 24251 auto-discovered prefixes for remote repository central (prefixes-central.txt)
@@ -171,46 +171,46 @@ run: https://github.com/negyesj/archi-demo/actions/runs/40389901345
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time:  6.010 s
-[INFO] Finished at: 2026-10-26T19:50:45Z
+[INFO] Total time:  5.838 s
+[INFO] Finished at: 2026-10-26T19:57:11Z
 [INFO] ------------------------------------------------------------------------
-#12 extracting sha256:4c7ba16bd344f677c6f8d058cbc17116b5dc990913267c9cc52980d2dfcd054e done
-#12 DONE 11.2s
+#12 DONE 11.4s
 
 #10 [build 1/6] FROM docker.io/library/maven:3.9-eclipse-temurin-21@sha256:99e61abcff91a9b1333463bd8451fb18495d6eba9250ac66a338b518f8278320
 #10 extracting sha256:1bf7f7b7d02f74fa2a38d4325c84dcaf0e91faae8e30f221d86c841b0c4f6647 0.2s done
 #10 extracting sha256:a466b9e11010eac13b4d1ac50894b683c5fbc95be50dc4dedcdec9c979f98f96 done
+#10 extracting sha256:405aa165b3ac61a5d93c2398a95cdd881401cceda86849dde23f6293310b70c0
 #10 extracting sha256:405aa165b3ac61a5d93c2398a95cdd881401cceda86849dde23f6293310b70c0 done
-#10 DONE 11.4s
+#10 DONE 11.5s
 
 #13 [build 2/6] WORKDIR /src
 #13 DONE 0.0s
 
-#14 [stage-1 2/4] RUN groupadd -r app && useradd -r -g app -u 10001 app
-#14 0.271 useradd warning: app's uid 10001 is greater than SYS_UID_MAX 999
-#14 DONE 0.3s
+#14 [build 3/6] COPY platform-libs/ platform-libs/
+#14 DONE 0.1s
 
-#15 [build 3/6] COPY platform-libs/ platform-libs/
-#15 DONE 0.1s
+#15 [stage-1 2/4] RUN groupadd -r app && useradd -r -g app -u 10001 app
+#15 0.226 useradd warning: app's uid 10001 is greater than SYS_UID_MAX 999
+#15 DONE 0.3s
 
 #16 [stage-1 3/4] WORKDIR /app
 #16 DONE 0.0s
 
-#17 [build 4/6] RUN --mount=type=cache,target=/root/.m2 mvn -B -ntp -q -f platform-libs/pom.xml install -DskipTests
-#17 DONE 27.5s
+#17 [build 4/6] RUN --mount=type=cache,target=/root/.m2,sharing=locked mvn -B -ntp -q -f platform-libs/pom.xml install -DskipTests
+#17 DONE 25.6s
 
 #18 [build 5/6] COPY service-audit/ svc/
 #18 DONE 0.3s
 
-#19 [build 6/6] RUN --mount=type=cache,target=/root/.m2 mvn -B -ntp -q -f svc/pom.xml package -DskipTests     && cp svc/target/*.jar /app.jar
-#19 DONE 9.1s
+#19 [build 6/6] RUN --mount=type=cache,target=/root/.m2,sharing=locked mvn -B -ntp -q -f svc/pom.xml package -DskipTests     && cp svc/target/*.jar /app.jar
+#19 DONE 8.8s
 
 #20 [stage-1 4/4] COPY --from=build /app.jar /app/app.jar
 #20 DONE 0.1s
 
 #21 exporting to image
 #21 exporting layers
-#21 exporting layers 0.9s done
-#21 writing image sha256:499f0ce75ceaebfd80ccd947a8a1076b634e9ad0f642e5777d931d9327fa659d done
+#21 exporting layers 0.8s done
+#21 writing image sha256:6c9dba1d771f62dbce91fab9254e5c7b83088988a2647f88181940a6aeaa5402 done
 #21 naming to docker.io/library/service-audit:ci done
 #21 DONE 0.9s
