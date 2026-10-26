@@ -48,6 +48,9 @@ public class PostgresProvisioner {
                     st.execute("create role " + role + " with login password '" + password + "'");
                 }
                 if (!exists(c, "select 1 from pg_database where datname = ?", db)) {
+                    // Menedzselt PostgreSQL-en (Cloud SQL, PG16+) az admin felhasználó nem szuperuser: csak akkor
+                    // adhatja a tenant szerepnek az adatbázist, ha maga is tagja. Szuperusernél ártalmatlan.
+                    st.execute("grant " + role + " to current_user");
                     st.execute("create database " + db + " owner " + role);
                 }
                 st.execute("revoke all on database " + db + " from public");
