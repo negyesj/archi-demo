@@ -1,0 +1,20 @@
+{
+  "id": "partner",
+  "name": "Partnerek",
+  "version": "0.1.0",
+  "dependsOn": ["core"],
+  "permissions": [
+    {"code": "partner.read", "name": "Partnerek megtekintése"},
+    {"code": "partner.write", "name": "Partnerek rögzítése, módosítása, törlése"},
+    {"code": "partner.report", "name": "Partner riport"}
+  ],
+  "menu": [
+    {"path": "partner", "label": "Partnerek", "permission": "partner.read"}
+  ],
+  "remoteEntry": "/mfe/partner/remoteEntry.json",
+  "dbSchema": "partner",
+  "readModels": ["partner_partner"],
+  "publishes": ["domain.partner.events"],
+  "webhookEvents": ["partner.partner.create", "partner.partner.update", "partner.partner.delete"],
+  "publicApi": {"version": "v1", "basePath": "/public/v1/t/{tenant}/partner"}
+}
