@@ -1,0 +1,34 @@
+# Az összes image buildje egy Cloud Build futásban (a forrás: ./scripts/assemble.sh által összerakott workspace/).
+# A Java image-ek egymás után épülnek, így a BuildKit Maven cache-t (/root/.m2) újra tudják használni.
+# Figyelem: a bash változók $$-ral szerepelnek, mert a Cloud Build a $NÉV alakot helyettesítésnek venné.
+steps:
+  - id: build-push
+    name: gcr.io/cloud-builders/docker
+    entrypoint: bash
+    env: ["DOCKER_BUILDKIT=1"]
+    args:
+      - -c
+      - |
+        set -euo pipefail
+        R="${_REGISTRY}"
+        build() { # build <image név> <docker build argumentumok...>
+          local name="$$1"; shift
+          echo "=== $$name"
+          docker build --progress=plain -t "$$R/$$name:${_TAG}" -t "$$R/$$name:$BUILD_ID" "$$@"
+          docker push --all-tags "$$R/$$name"
+        }
+        for dir in service-gateway service-tenant-admin service-provisioner service-iam service-audit \
+                   service-webhook service-partner service-irat worker-outbox-relay worker-reporting-projector; do
+          name="$${dir#service-}"; name="$${name#worker-}"
+          build "$$name" -f "$$dir/Dockerfile" --build-arg SERVICE_DIR="$$dir" .
+        done
+        build frontend-app frontend-app
+        build frontend-admin frontend-admin
+        build keycloak _keycloak
+substitutions:
+  _REGISTRY: europe-central2-docker.pkg.dev/archi-demo/archi
+  _TAG: latest
+options:
+  machineType: E2_HIGHCPU_8
+  logging: CLOUD_LOGGING_ONLY
+timeout: 3600s

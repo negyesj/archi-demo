@@ -7,6 +7,9 @@ KC=${KC:-http://localhost:8180}
 API=${API:-http://localhost:8080}
 CODE=${CODE:-smoke$(date +%s | tail -c 6)}
 TIMEOUT=${TIMEOUT:-600}
+ADMIN_USER=${ADMIN_USER:-admin}
+ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin}
+APP_URL=${APP_URL:-http://localhost:4200}
 
 json() { python3 -c "import sys,json;d=json.load(sys.stdin);print($1)" 2>/dev/null; }
 
@@ -21,7 +24,7 @@ wait_until() { # wait_until <leírás> <parancs>
 }
 
 get_token() {
-  TOKEN=$(curl -sf -d grant_type=password -d client_id=platform-cli -d username=admin -d password=admin \
+  TOKEN=$(curl -sf -d grant_type=password -d client_id=platform-cli --data-urlencode "username=$ADMIN_USER" --data-urlencode "password=$ADMIN_PASSWORD" \
     "$KC/realms/platform/protocol/openid-connect/token" | json 'd["access_token"]')
   [ -n "$TOKEN" ]
 }
@@ -55,4 +58,4 @@ curl -sf "${H[@]}" -X POST "$API/api/admin/tenants/$CODE/bootstrap-password" | j
 
 public_info() { curl -sf "$API/api/tenants/$CODE" > /dev/null; }
 wait_until "tenant elérhető a gatewayen (/api/tenants/$CODE)" public_info
-echo "OK: http://localhost:4200/t/$CODE"
+echo "OK: $APP_URL/t/$CODE"

@@ -79,6 +79,8 @@ docker compose up -d --build
 | Titkok | `.env` | Vault / Kubernetes Secret | Secret Manager |
 | Log / trace | otel-lgtm | Loki, Tempo, Grafana | Cloud Logging, Cloud Trace |
 
+Google Cloud Run demó telepítés (infrastruktúra egy VM-en, minden más Cloud Runon): [`deploy/gcp`](deploy/gcp/README.md).
+
 ## Ismert MVP egyszerűsítések
 
 - A titoktár MVP implementációja a platform adatbázisban AES-GCM-mel titkosít (`SecretProvider`); élesben Vault /
