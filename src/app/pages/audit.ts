@@ -31,7 +31,7 @@ interface Row { id: number; occurredAt: string; actorId: string; actorName: stri
       <ng-container matColumnDef="actor"><th mat-header-cell *matHeaderCellDef>Végrehajtó</th><td mat-cell *matCellDef="let r">{{ r.actorName }} ({{ r.actorId }})</td></ng-container>
       <ng-container matColumnDef="action"><th mat-header-cell *matHeaderCellDef>Művelet</th><td mat-cell *matCellDef="let r">{{ r.action }}</td></ng-container>
       <ng-container matColumnDef="target"><th mat-header-cell *matHeaderCellDef>Cél</th><td mat-cell *matCellDef="let r">{{ r.targetType }} {{ r.targetId }}</td></ng-container>
-      <ng-container matColumnDef="details"><th mat-header-cell *matHeaderCellDef>Részletek</th><td mat-cell *matCellDef="let r"><code>{{ r.details | json }}</code></td></ng-container>
+      <ng-container matColumnDef="details"><th mat-header-cell *matHeaderCellDef>Részletek</th><td mat-cell *matCellDef="let r">@if (r.details) {<code>{{ r.details | json }}</code>}</td></ng-container>
       <tr mat-header-row *matHeaderRowDef="cols"></tr>
       <tr mat-row *matRowDef="let row; columns: cols"></tr>
     </table>
