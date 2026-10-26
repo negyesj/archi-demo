@@ -1,0 +1,37 @@
+name: ci
+on:
+  push:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: worker-outbox-relay
+      - uses: actions/checkout@v4
+        with:
+          ref: platform/libs
+          path: platform-libs
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+          cache-dependency-path: '**/pom.xml'
+      - name: Build és teszt
+        run: |
+          set -o pipefail
+          mvn -B -ntp -f platform-libs/pom.xml install -DskipTests 2>&1 | tee build.log
+          mvn -B -ntp -f worker-outbox-relay/pom.xml verify 2>&1 | tee -a build.log
+      - name: Docker image build
+        run: |
+          set -o pipefail
+          docker build -f worker-outbox-relay/Dockerfile --build-arg SERVICE_DIR=worker-outbox-relay -t worker-outbox-relay:ci . 2>&1 | tail -n 40 | tee -a build.log
+      - name: Napló publikálása
+        if: always()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: worker-outbox-relay/.github/scripts/publish-log.sh build.log ${{ job.status }}
