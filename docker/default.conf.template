@@ -1,0 +1,29 @@
+# Angular SPA + a belső API továbbítása a felületi gatewayre.
+server {
+    listen 8080;
+    server_name _;
+    root /usr/share/nginx/html;
+
+    location /api/ {
+        proxy_pass ${API_UPSTREAM};
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header traceparent $http_traceparent;
+    }
+
+    location = /config.json {
+        add_header Cache-Control "no-store";
+    }
+
+    location ~* \.(js|css|woff2?|ttf|svg|ico)$ {
+        expires 30d;
+        add_header Cache-Control "public, immutable";
+        try_files $uri =404;
+    }
+
+    location / {
+        add_header Cache-Control "no-cache";
+        try_files $uri $uri/ /index.html;
+    }
+}
