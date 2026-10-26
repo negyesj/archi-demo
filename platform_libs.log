@@ -1,5 +1,135 @@
 branch: platform/libs
-commit: 2f14aaaaa6ed2cf15a3e8e82c6ff1ecccdccd147
+commit: 6ddd39dce1433f28286502cce8a77faf12c9040a
 status: success
-run: https://github.com/negyesj/archi-demo/actions/runs/40388795471
+run: https://github.com/negyesj/archi-demo/actions/runs/40389900845
 ----
+[INFO] Scanning for projects...
+[INFO] Loaded 24251 auto-discovered prefixes for remote repository central (prefixes-central.txt)
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] Platform parent POM                                                [pom]
+[INFO] platform-core                                                      [jar]
+[INFO] platform-web                                                       [jar]
+[INFO] platform-reporting                                                 [jar]
+[INFO] Platform shared libraries (aggregator)                             [pom]
+[INFO] 
+[INFO] ------------------< hu.dmsone.archi:platform-parent >-------------------
+[INFO] Building Platform parent POM 0.1.0-SNAPSHOT                        [1/5]
+[INFO]   from platform-parent/pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] Loaded 74 auto-discovered prefixes for remote repository apache.snapshots (prefixes-apache.snapshots.txt)
+[INFO] 
+[INFO] --- install:3.1.4:install (default-install) @ platform-parent ---
+[INFO] Installing /home/runner/work/archi-demo/archi-demo/platform-parent/pom.xml to /home/runner/.m2/repository/hu/dmsone/archi/platform-parent/0.1.0-SNAPSHOT/platform-parent-0.1.0-SNAPSHOT.pom
+[INFO] 
+[INFO] -------------------< hu.dmsone.archi:platform-core >--------------------
+[INFO] Building platform-core 0.1.0-SNAPSHOT                              [2/5]
+[INFO]   from platform-core/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] Loaded 24251 auto-discovered prefixes for remote repository maven-central (prefixes-maven-central.txt)
+[WARNING] Could not transfer metadata /.meta/prefixes.txt from/to flyway-community-db-support (https://maven.pkg.github.com/flyway/flyway-community-db-support): HTTP Status: 401
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ platform-core ---
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] Copying 3 resources from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.14.0:compile (default-compile) @ platform-core ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 26 source files with javac [debug parameters release 21] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ platform-core ---
+[INFO] skip non existing resourceDirectory /home/runner/work/archi-demo/archi-demo/platform-core/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ platform-core ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ platform-core ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ platform-core ---
+[INFO] Building jar: /home/runner/work/archi-demo/archi-demo/platform-core/target/platform-core-0.1.0-SNAPSHOT.jar
+[INFO] 
+[INFO] --- install:3.1.4:install (default-install) @ platform-core ---
+[INFO] Installing /home/runner/work/archi-demo/archi-demo/platform-core/pom.xml to /home/runner/.m2/repository/hu/dmsone/archi/platform-core/0.1.0-SNAPSHOT/platform-core-0.1.0-SNAPSHOT.pom
+[INFO] Installing /home/runner/work/archi-demo/archi-demo/platform-core/target/platform-core-0.1.0-SNAPSHOT.jar to /home/runner/.m2/repository/hu/dmsone/archi/platform-core/0.1.0-SNAPSHOT/platform-core-0.1.0-SNAPSHOT.jar
+[INFO] 
+[INFO] --------------------< hu.dmsone.archi:platform-web >--------------------
+[INFO] Building platform-web 0.1.0-SNAPSHOT                               [3/5]
+[INFO]   from platform-web/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ platform-web ---
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.14.0:compile (default-compile) @ platform-web ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 16 source files with javac [debug parameters release 21] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ platform-web ---
+[INFO] skip non existing resourceDirectory /home/runner/work/archi-demo/archi-demo/platform-web/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ platform-web ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ platform-web ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ platform-web ---
+[INFO] Building jar: /home/runner/work/archi-demo/archi-demo/platform-web/target/platform-web-0.1.0-SNAPSHOT.jar
+[INFO] 
+[INFO] --- install:3.1.4:install (default-install) @ platform-web ---
+[INFO] Installing /home/runner/work/archi-demo/archi-demo/platform-web/pom.xml to /home/runner/.m2/repository/hu/dmsone/archi/platform-web/0.1.0-SNAPSHOT/platform-web-0.1.0-SNAPSHOT.pom
+[INFO] Installing /home/runner/work/archi-demo/archi-demo/platform-web/target/platform-web-0.1.0-SNAPSHOT.jar to /home/runner/.m2/repository/hu/dmsone/archi/platform-web/0.1.0-SNAPSHOT/platform-web-0.1.0-SNAPSHOT.jar
+[INFO] 
+[INFO] -----------------< hu.dmsone.archi:platform-reporting >-----------------
+[INFO] Building platform-reporting 0.1.0-SNAPSHOT                         [4/5]
+[INFO]   from platform-reporting/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ platform-reporting ---
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.14.0:compile (default-compile) @ platform-reporting ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 4 source files with javac [debug parameters release 21] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ platform-reporting ---
+[INFO] skip non existing resourceDirectory /home/runner/work/archi-demo/archi-demo/platform-reporting/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ platform-reporting ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ platform-reporting ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ platform-reporting ---
+[INFO] Building jar: /home/runner/work/archi-demo/archi-demo/platform-reporting/target/platform-reporting-0.1.0-SNAPSHOT.jar
+[INFO] 
+[INFO] --- install:3.1.4:install (default-install) @ platform-reporting ---
+[INFO] Installing /home/runner/work/archi-demo/archi-demo/platform-reporting/pom.xml to /home/runner/.m2/repository/hu/dmsone/archi/platform-reporting/0.1.0-SNAPSHOT/platform-reporting-0.1.0-SNAPSHOT.pom
+[INFO] Installing /home/runner/work/archi-demo/archi-demo/platform-reporting/target/platform-reporting-0.1.0-SNAPSHOT.jar to /home/runner/.m2/repository/hu/dmsone/archi/platform-reporting/0.1.0-SNAPSHOT/platform-reporting-0.1.0-SNAPSHOT.jar
+[INFO] 
+[INFO] -------------------< hu.dmsone.archi:platform-libs >--------------------
+[INFO] Building Platform shared libraries (aggregator) 0.1.0-SNAPSHOT     [5/5]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- install:3.2.0:install (default-install) @ platform-libs ---
+[INFO] Installing /home/runner/work/archi-demo/archi-demo/pom.xml to /home/runner/.m2/repository/hu/dmsone/archi/platform-libs/0.1.0-SNAPSHOT/platform-libs-0.1.0-SNAPSHOT.pom
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for Platform shared libraries (aggregator) 0.1.0-SNAPSHOT:
+[INFO] 
+[INFO] Platform parent POM ................................ SUCCESS [  1.822 s]
+[INFO] platform-core ...................................... SUCCESS [  3.198 s]
+[INFO] platform-web ....................................... SUCCESS [  0.637 s]
+[INFO] platform-reporting ................................. SUCCESS [  0.269 s]
+[INFO] Platform shared libraries (aggregator) ............. SUCCESS [  0.053 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  6.630 s
+[INFO] Finished at: 2026-10-26T19:50:15Z
+[INFO] ------------------------------------------------------------------------
