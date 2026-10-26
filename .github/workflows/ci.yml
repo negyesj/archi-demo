@@ -1,0 +1,29 @@
+name: ci
+on:
+  push:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Build
+        run: |
+          set -o pipefail
+          npm ci --no-audit --no-fund 2>&1 | tail -n 20 | tee build.log
+          npx ng build --configuration production 2>&1 | tee -a build.log
+      - name: Docker image build
+        run: |
+          set -o pipefail
+          docker build -t frontend-admin:ci . 2>&1 | tail -n 30 | tee -a build.log
+      - name: Napló publikálása
+        if: always()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: .github/scripts/publish-log.sh build.log ${{ job.status }}
