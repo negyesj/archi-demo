@@ -11,8 +11,10 @@ steps:
       - |
         set -euo pipefail
         R="${_REGISTRY}"
+        ONLY=" ${_ONLY} "
         build() { # build <image név> <docker build argumentumok...>
           local name="$$1"; shift
+          if [ "$$ONLY" != "  " ] && [[ "$$ONLY" != *" $$name "* ]]; then echo "--- $$name (kihagyva)"; return 0; fi
           echo "=== $$name"
           docker build --progress=plain -t "$$R/$$name:${_TAG}" -t "$$R/$$name:$BUILD_ID" "$$@"
           docker push --all-tags "$$R/$$name"
@@ -28,6 +30,7 @@ steps:
 substitutions:
   _REGISTRY: europe-west1-docker.pkg.dev/archi-demo-512819/archi
   _TAG: latest
+  _ONLY: ""
 options:
   machineType: E2_HIGHCPU_8
   logging: CLOUD_LOGGING_ONLY

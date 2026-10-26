@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 # 4. lépés: a branchek összerakása (scripts/assemble.sh) és az összes image buildje Cloud Builddel
 # az Artifact Registrybe. Időtartam: kb. 20–30 perc.
+#   ./03-build.sh                       # minden image
+#   ./03-build.sh frontend-admin iam    # csak a megnevezett image-ek (néhány perc)
+# Image nevek: gateway tenant-admin provisioner iam audit webhook partner irat outbox-relay
+#              reporting-projector frontend-app frontend-admin keycloak
 source "$(dirname "$0")/lib.sh"
 cd "$REPO_ROOT"
 
@@ -29,11 +33,11 @@ cat > workspace/.gcloudignore <<'IGN'
 **/.angular/
 IGN
 
-step "Cloud Build: $REGISTRY (tag: $IMAGE_TAG)"
+step "Cloud Build: $REGISTRY (tag: $IMAGE_TAG${*:+, csak: $*})"
 gcloud builds submit workspace --config deploy/gcp/cloudbuild.yaml \
-  --substitutions "_REGISTRY=$REGISTRY,_TAG=$IMAGE_TAG" \
+  --substitutions "_REGISTRY=$REGISTRY,_TAG=$IMAGE_TAG,_ONLY=$*" \
   --service-account "projects/$PROJECT_ID/serviceAccounts/$BUILD_SA_EMAIL"
 
 step "Image-ek:"
 gcloud artifacts docker images list "$REGISTRY" --include-tags --filter "tags:$IMAGE_TAG" --format 'value(package)' | sort -u
-echo "Következő: ./04-deploy.sh"
+echo "Következő: ./04-deploy.sh${*:+ $*}"
