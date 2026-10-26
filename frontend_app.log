@@ -1,10 +1,10 @@
 branch: frontend/app
-commit: 4704f66dfd9739dadf1a4066eec39cb2e9e8e143
+commit: 2eb755763eccaccf8ff0ddb71394113575e23ac9
 status: success
-run: https://github.com/negyesj/archi-demo/actions/runs/40389901002
+run: https://github.com/negyesj/archi-demo/actions/runs/40398194672
 ----
 
-added 239 packages in 6s
+added 239 packages in 8s
 ❯ Building...
 ✔ Building...
 Initial chunk files | Names         |  Raw size | Estimated transfer size
@@ -32,37 +32,37 @@ chunk-DQXb8z0n.js   | feldolgozas   |   8.21 kB |                 2.61 kB
 chunk-UmYOec6V.js   | kereso        |   7.89 kB |                 2.44 kB
 ...and 8 more lazy chunks files. Use "--verbose" to show all the files.
 
-Application bundle generation complete. [11.098 seconds] - 2026-10-26T19:51:10.356Z
+Application bundle generation complete. [10.674 seconds] - 2026-10-26T20:44:04.662Z
 
 Output location: /home/runner/work/archi-demo/archi-demo/dist/frontend-app
 
-#19 12.61 chunk-CuF_aBjT.js   | -             |  29.99 kB |                 7.06 kB
-#19 12.61 chunk-J5Y4I5Zb.js   | audit         |  26.79 kB |                 6.80 kB
-#19 12.61 chunk-QWkkid5I.js   | -             |  26.52 kB |                 7.00 kB
-#19 12.61 chunk-CbhMu-Hd.js   | -             |  23.89 kB |                 6.53 kB
-#19 12.61 chunk-LTrVRQ4w.js   | -             |  23.37 kB |                 4.73 kB
-#19 12.61 chunk-DKmmhfLm.js   | -             |  17.72 kB |                 4.80 kB
-#19 12.61 chunk-BoNg6q16.js   | -             |  13.25 kB |                 3.41 kB
-#19 12.61 chunk-mtxprNLu.js   | partners      |   8.61 kB |                 2.80 kB
-#19 12.61 chunk-DQXb8z0n.js   | feldolgozas   |   8.21 kB |                 2.61 kB
-#19 12.61 chunk-UmYOec6V.js   | kereso        |   7.89 kB |                 2.44 kB
-#19 12.61 ...and 8 more lazy chunks files. Use "--verbose" to show all the files.
-#19 12.61 
-#19 12.61 Application bundle generation complete. [11.574 seconds] - 2026-10-26T19:51:43.135Z
-#19 12.61 
-#19 12.62 Output location: /src/dist/frontend-app
-#19 12.62 
-#19 DONE 12.8s
+#19 12.96 chunk-CuF_aBjT.js   | -             |  29.99 kB |                 7.06 kB
+#19 12.96 chunk-J5Y4I5Zb.js   | audit         |  26.79 kB |                 6.80 kB
+#19 12.96 chunk-QWkkid5I.js   | -             |  26.52 kB |                 7.00 kB
+#19 12.96 chunk-CbhMu-Hd.js   | -             |  23.89 kB |                 6.53 kB
+#19 12.96 chunk-LTrVRQ4w.js   | -             |  23.37 kB |                 4.73 kB
+#19 12.96 chunk-DKmmhfLm.js   | -             |  17.72 kB |                 4.80 kB
+#19 12.96 chunk-BoNg6q16.js   | -             |  13.25 kB |                 3.41 kB
+#19 12.96 chunk-mtxprNLu.js   | partners      |   8.61 kB |                 2.80 kB
+#19 12.96 chunk-DQXb8z0n.js   | feldolgozas   |   8.21 kB |                 2.61 kB
+#19 12.96 chunk-UmYOec6V.js   | kereso        |   7.89 kB |                 2.44 kB
+#19 12.96 ...and 8 more lazy chunks files. Use "--verbose" to show all the files.
+#19 12.96 
+#19 12.96 Application bundle generation complete. [11.589 seconds] - 2026-10-26T20:44:35.063Z
+#19 12.96 
+#19 12.97 Output location: /src/dist/frontend-app
+#19 12.97 
+#19 DONE 13.2s
 
 #20 [stage-1 4/5] COPY --from=build /src/dist/frontend-app/browser /usr/share/nginx/html
-#20 DONE 0.1s
+#20 DONE 0.0s
 
 #21 [stage-1 5/5] RUN rm -f /etc/nginx/conf.d/default.conf && chown -R nginx:nginx /usr/share/nginx/html
 #21 DONE 0.2s
 
 #22 exporting to image
 #22 exporting layers
-#22 exporting layers 0.2s done
-#22 writing image sha256:7654afdb6bf49cc9d067549d8c9cc161a601b96b7ccf2af4acb22fdbb12b66ad done
+#22 exporting layers 0.4s done
+#22 writing image sha256:cd452dd159d81d4572f1c7623596ea265aff04c60ef5cb363847ad3a5ce50507 done
 #22 naming to docker.io/library/frontend:ci done
-#22 DONE 0.2s
+#22 DONE 0.4s
