@@ -1,0 +1,10 @@
+{
+  "id": "webhook",
+  "name": "Webhookok",
+  "version": "0.1.0",
+  "core": true,
+  "dependsOn": [],
+  "permissions": [],
+  "consumes": ["domain.*.events", "iam.events"],
+  "publicApi": {"version": "v1", "basePath": "/public/v1/t/{tenant}/webhook"}
+}
