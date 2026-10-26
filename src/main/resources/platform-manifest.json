@@ -1,0 +1,26 @@
+{
+  "id": "irat",
+  "name": "Bejövő irat kezelés",
+  "version": "0.1.0",
+  "dependsOn": ["core", "partner"],
+  "permissions": [
+    {"code": "irat.read", "name": "Küldemények megtekintése"},
+    {"code": "irat.erkeztetes", "name": "Érkeztetés"},
+    {"code": "irat.bontas", "name": "Bontás"},
+    {"code": "irat.iktatas", "name": "Iktatás"},
+    {"code": "irat.report", "name": "Iratkereső (riport)"},
+    {"code": "irat.report.all", "name": "Iratkereső: minden küldemény látható"}
+  ],
+  "menu": [
+    {"path": "irat/erkeztetes", "label": "Érkeztetés", "permission": "irat.erkeztetes"},
+    {"path": "irat/feldolgozas", "label": "Bontás, iktatás", "permission": "irat.read"},
+    {"path": "irat/kereso", "label": "Iratkereső", "permission": "irat.report"}
+  ],
+  "remoteEntry": "/mfe/irat/remoteEntry.json",
+  "dbSchema": "irat",
+  "readModels": ["irat_kuldemeny"],
+  "publishes": ["domain.irat.events"],
+  "consumes": [],
+  "webhookEvents": ["irat.kuldemeny.erkeztetes", "irat.kuldemeny.bontas", "irat.kuldemeny.iktatas"],
+  "publicApi": {"version": "v1", "basePath": "/public/v1/t/{tenant}/irat"}
+}

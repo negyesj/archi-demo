@@ -1,0 +1,61 @@
+spring:
+  application:
+    name: irat
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP:localhost:9092}
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+  flyway:
+    enabled: false
+
+server:
+  port: ${PORT:8080}
+
+platform:
+  service-id: irat
+  platform-db:
+    url: ${PLATFORM_DB_URL:jdbc:postgresql://localhost:5432/platform}
+    username: ${PLATFORM_DB_USER:platform_app}
+    password: ${PLATFORM_DB_PASSWORD:platform_app}
+  secrets:
+    key: ${PLATFORM_SECRET_KEY:}
+  tenant-db:
+    enabled: true
+    host: ${TENANT_DB_HOST:localhost}
+    port: ${TENANT_DB_PORT:5432}
+    migrations:
+      - schema: irat
+        location: classpath:db/tenant/irat
+  web:
+    issuer-base: ${KEYCLOAK_PUBLIC_URL:http://localhost:8180}
+    jwks-base: ${KEYCLOAK_INTERNAL_URL:http://localhost:8180}
+    iam-base-url: ${IAM_BASE_URL:http://localhost:8082}
+
+  reporting:
+    host: ${MONGO_HOST:localhost}
+    port: ${MONGO_PORT:27017}
+
+irat:
+  partner-url: ${PARTNER_URI:http://localhost:8084}
+  iam-url: ${IAM_BASE_URL:http://localhost:8082}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  health:
+    db:
+      enabled: false
+    redis:
+      enabled: false
+    mongo:
+      enabled: false
+  tracing:
+    sampling:
+      probability: ${TRACING_SAMPLING:1.0}
+  otlp:
+    tracing:
+      endpoint: ${OTLP_TRACES_ENDPOINT:http://localhost:4318/v1/traces}
