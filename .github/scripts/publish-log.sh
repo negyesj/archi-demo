@@ -2,7 +2,7 @@
 # CI napló publikálása a ci-logs branchre (a fejlesztés közbeni visszajelzéshez).
 # Használat: publish-log.sh <logfile> <status>
 set -u
-LOG="$1"; STATUS="$2"
+LOG="$(realpath "$1")"; STATUS="$2"
 SAFE="${GITHUB_REF_NAME//\//_}"
 WORK=$(mktemp -d)
 REMOTE="https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
