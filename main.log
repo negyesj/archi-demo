@@ -1,5 +1,229 @@
 branch: main
-commit: 2a1ce0b6aa367e87c0435d60c7bacf239876e1cc
+commit: 5926525436ced47f1f5a7997ce2d32e879b2351b
 status: failure
-run: https://github.com/negyesj/archi-demo/actions/runs/40388807907
+run: https://github.com/negyesj/archi-demo/actions/runs/40389900919
 ----
+✓ platform/libs → workspace/platform-libs (6ddd39d)
+✓ service/gateway → workspace/service-gateway (d0a907e)
+✓ service/tenant-admin → workspace/service-tenant-admin (cf47b8e)
+✓ service/provisioner → workspace/service-provisioner (5043210)
+✓ service/iam → workspace/service-iam (c73e00e)
+✓ service/audit → workspace/service-audit (541a592)
+✓ service/webhook → workspace/service-webhook (c2a6f3b)
+✓ service/partner → workspace/service-partner (e67e68f)
+✓ service/irat → workspace/service-irat (7bb2378)
+✓ worker/outbox-relay → workspace/worker-outbox-relay (0dd7c98)
+✓ worker/reporting-projector → workspace/worker-reporting-projector (9c7a86f)
+✓ frontend/app → workspace/frontend-app (4704f66)
+✓ frontend/admin → workspace/frontend-admin (25c7faf)
+Kész: /home/runner/work/archi-demo/archi-demo/workspace
+#60 [gateway-ui stage-1 2/4] RUN groupadd -r app && useradd -r -g app -u 10001 app
+#60 0.671 useradd warning: app's uid 10001 is greater than SYS_UID_MAX 999
+#60 DONE 0.8s
+
+#61 [reporting-projector stage-1 3/4] WORKDIR /app
+#61 DONE 0.1s
+
+#38 [partner build 1/6] FROM docker.io/library/maven:3.9-eclipse-temurin-21@sha256:99e61abcff91a9b1333463bd8451fb18495d6eba9250ac66a338b518f8278320
+#38 extracting sha256:bd0bb49686d38ffc090c15f30d472cdb0354fb8cf46c03f21f4f2764d4e4efcd 2.5s done
+#38 extracting sha256:1bf7f7b7d02f74fa2a38d4325c84dcaf0e91faae8e30f221d86c841b0c4f6647
+#38 extracting sha256:1bf7f7b7d02f74fa2a38d4325c84dcaf0e91faae8e30f221d86c841b0c4f6647 0.2s done
+#38 extracting sha256:a466b9e11010eac13b4d1ac50894b683c5fbc95be50dc4dedcdec9c979f98f96 done
+#38 extracting sha256:405aa165b3ac61a5d93c2398a95cdd881401cceda86849dde23f6293310b70c0
+#38 extracting sha256:405aa165b3ac61a5d93c2398a95cdd881401cceda86849dde23f6293310b70c0 done
+#38 DONE 18.6s
+
+#62 [partner build 2/6] WORKDIR /src
+#62 DONE 0.0s
+
+#63 [outbox-relay build 3/6] COPY platform-libs/ platform-libs/
+#63 DONE 0.2s
+
+#64 [irat build 3/6] COPY platform-libs/ platform-libs/
+#64 CACHED
+
+#65 [iam build 3/6] COPY platform-libs/ platform-libs/
+#65 CACHED
+
+#66 [tenant-admin build 3/6] COPY platform-libs/ platform-libs/
+#66 CACHED
+
+#67 [outbox-relay build 3/6] COPY platform-libs/ platform-libs/
+#67 CACHED
+
+#68 [gateway-ui build 3/6] COPY platform-libs/ platform-libs/
+#68 CACHED
+
+#69 [reporting-projector build 3/6] COPY platform-libs/ platform-libs/
+#69 CACHED
+
+#70 [partner build 3/6] COPY platform-libs/ platform-libs/
+#70 CACHED
+
+#71 [provisioner build 3/6] COPY platform-libs/ platform-libs/
+#71 CACHED
+
+#72 [webhook build 3/6] COPY platform-libs/ platform-libs/
+#72 CACHED
+
+#73 [outbox-relay build 4/6] RUN --mount=type=cache,target=/root/.m2 mvn -B -ntp -q -f platform-libs/pom.xml install -DskipTests
+#73 ...
+
+#74 [frontend-app build 4/6] RUN npm ci --no-audit --no-fund
+#74 ...
+
+#75 [frontend-admin build 4/6] RUN npm ci --no-audit --no-fund
+#75 ...
+
+#76 [provisioner build 4/6] RUN --mount=type=cache,target=/root/.m2 mvn -B -ntp -q -f platform-libs/pom.xml install -DskipTests
+#76 ...
+
+#77 [gateway-ui build 4/6] RUN --mount=type=cache,target=/root/.m2 mvn -B -ntp -q -f platform-libs/pom.xml install -DskipTests
+#77 ...
+
+#78 [iam build 4/6] RUN --mount=type=cache,target=/root/.m2 mvn -B -ntp -q -f platform-libs/pom.xml install -DskipTests
+#78 ...
+
+#79 [partner build 4/6] RUN --mount=type=cache,target=/root/.m2 mvn -B -ntp -q -f platform-libs/pom.xml install -DskipTests
+#79 ...
+
+#80 [audit build 4/6] RUN --mount=type=cache,target=/root/.m2 mvn -B -ntp -q -f platform-libs/pom.xml install -DskipTests
+#80 ...
+
+#81 [webhook build 4/6] RUN --mount=type=cache,target=/root/.m2 mvn -B -ntp -q -f platform-libs/pom.xml install -DskipTests
+#81 ...
+
+#82 [tenant-admin build 4/6] RUN --mount=type=cache,target=/root/.m2 mvn -B -ntp -q -f platform-libs/pom.xml install -DskipTests
+#82 ...
+
+#83 [irat build 4/6] RUN --mount=type=cache,target=/root/.m2 mvn -B -ntp -q -f platform-libs/pom.xml install -DskipTests
+#83 ...
+
+#84 [reporting-projector build 4/6] RUN --mount=type=cache,target=/root/.m2 mvn -B -ntp -q -f platform-libs/pom.xml install -DskipTests
+#84 ...
+
+#75 [frontend-admin build 4/6] RUN npm ci --no-audit --no-fund
+#75 62.29 
+#75 62.29 added 239 packages in 1m
+#75 62.31 npm notice
+#75 62.31 npm notice New major version of npm available! 10.9.9 -> 12.2.1
+#75 62.31 npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+#75 62.31 npm notice To update run: npm install -g npm@12.2.1
+#75 62.31 npm notice
+#75 DONE 64.5s
+
+#82 [tenant-admin build 4/6] RUN --mount=type=cache,target=/root/.m2 mvn -B -ntp -q -f platform-libs/pom.xml install -DskipTests
+#82 ...
+
+#85 [frontend-admin build 5/6] COPY . .
+#85 DONE 0.2s
+
+#80 [audit build 4/6] RUN --mount=type=cache,target=/root/.m2 mvn -B -ntp -q -f platform-libs/pom.xml install -DskipTests
+#80 ...
+
+#86 [frontend-admin build 6/6] RUN npx ng build --configuration production
+#86 ...
+
+#74 [frontend-app build 4/6] RUN npm ci --no-audit --no-fund
+#74 73.01 
+#74 73.01 added 239 packages in 1m
+#74 73.04 npm notice
+#74 73.04 npm notice New major version of npm available! 10.9.9 -> 12.2.1
+#74 73.04 npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+#74 73.04 npm notice To update run: npm install -g npm@12.2.1
+#74 73.04 npm notice
+#74 DONE 74.5s
+
+#83 [irat build 4/6] RUN --mount=type=cache,target=/root/.m2 mvn -B -ntp -q -f platform-libs/pom.xml install -DskipTests
+#83 ...
+
+#87 [frontend-app build 5/6] COPY . .
+#87 DONE 0.1s
+
+#88 [frontend-app build 6/6] RUN npx ng build --configuration production
+#88 ...
+
+#86 [frontend-admin build 6/6] RUN npx ng build --configuration production
+#86 16.21 ❯ Building...
+#86 ...
+
+#88 [frontend-app build 6/6] RUN npx ng build --configuration production
+#88 16.17 ❯ Building...
+#88 ...
+
+#73 [outbox-relay build 4/6] RUN --mount=type=cache,target=/root/.m2 mvn -B -ntp -q -f platform-libs/pom.xml install -DskipTests
+#73 162.4 [ERROR] Failed to execute goal org.apache.maven.plugins:maven-install-plugin:3.1.4:install (default-install) on project platform-core: Failed to install metadata hu.dmsone.archi:platform-core:0.1.0-SNAPSHOT/maven-metadata.xml: Could not read metadata /root/.m2/repository/hu/dmsone/archi/platform-core/0.1.0-SNAPSHOT/maven-metadata-local.xml: no more data available - expected end tags </extension></snapshotVersion></snapshotVersions></versioning></metadata> to close start tag <extension> from line 17 and start tag <snapshotVersion> from line 16 and start tag <snapshotVersions> from line 10 and start tag <versioning> from line 5 and start tag <metadata> from line 2, parser stopped on TEXT seen ...<extension>jar</ex... @17:27 -> [Help 1]
+#73 162.4 [ERROR] 
+#73 162.4 [ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+#73 162.4 [ERROR] Re-run Maven using the -X switch to enable full debug logging.
+#73 162.4 [ERROR] 
+#73 162.4 [ERROR] For more information about the errors and possible solutions, please read the following articles:
+#73 162.4 [ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException
+#73 162.4 [ERROR] 
+#73 162.4 [ERROR] After correcting the problems, you can resume the build with the command
+#73 162.4 [ERROR]   mvn <args> -rf :platform-core
+#73 ERROR: process "/bin/sh -c mvn -B -ntp -q -f platform-libs/pom.xml install -DskipTests" did not complete successfully: exit code: 1
+
+#86 [frontend-admin build 6/6] RUN npx ng build --configuration production
+#86 ...
+
+#80 [audit build 4/6] RUN --mount=type=cache,target=/root/.m2 mvn -B -ntp -q -f platform-libs/pom.xml install -DskipTests
+#80 CANCELED
+
+#81 [webhook build 4/6] RUN --mount=type=cache,target=/root/.m2 mvn -B -ntp -q -f platform-libs/pom.xml install -DskipTests
+#81 CANCELED
+
+#88 [frontend-app build 6/6] RUN npx ng build --configuration production
+#88 CANCELED
+
+#77 [gateway-ui build 4/6] RUN --mount=type=cache,target=/root/.m2 mvn -B -ntp -q -f platform-libs/pom.xml install -DskipTests
+#77 CANCELED
+
+#83 [irat build 4/6] RUN --mount=type=cache,target=/root/.m2 mvn -B -ntp -q -f platform-libs/pom.xml install -DskipTests
+#83 ...
+
+#82 [tenant-admin build 4/6] RUN --mount=type=cache,target=/root/.m2 mvn -B -ntp -q -f platform-libs/pom.xml install -DskipTests
+#82 CANCELED
+
+#84 [reporting-projector build 4/6] RUN --mount=type=cache,target=/root/.m2 mvn -B -ntp -q -f platform-libs/pom.xml install -DskipTests
+#84 CANCELED
+
+#79 [partner build 4/6] RUN --mount=type=cache,target=/root/.m2 mvn -B -ntp -q -f platform-libs/pom.xml install -DskipTests
+#79 CANCELED
+
+#78 [iam build 4/6] RUN --mount=type=cache,target=/root/.m2 mvn -B -ntp -q -f platform-libs/pom.xml install -DskipTests
+#78 CANCELED
+
+#76 [provisioner build 4/6] RUN --mount=type=cache,target=/root/.m2 mvn -B -ntp -q -f platform-libs/pom.xml install -DskipTests
+#76 CANCELED
+
+#86 [frontend-admin build 6/6] RUN npx ng build --configuration production
+#86 CANCELED
+
+#83 [irat build 4/6] RUN --mount=type=cache,target=/root/.m2 mvn -B -ntp -q -f platform-libs/pom.xml install -DskipTests
+#83 CANCELED
+------
+ > [outbox-relay build 4/6] RUN --mount=type=cache,target=/root/.m2 mvn -B -ntp -q -f platform-libs/pom.xml install -DskipTests:
+162.4 [ERROR] Failed to execute goal org.apache.maven.plugins:maven-install-plugin:3.1.4:install (default-install) on project platform-core: Failed to install metadata hu.dmsone.archi:platform-core:0.1.0-SNAPSHOT/maven-metadata.xml: Could not read metadata /root/.m2/repository/hu/dmsone/archi/platform-core/0.1.0-SNAPSHOT/maven-metadata-local.xml: no more data available - expected end tags </extension></snapshotVersion></snapshotVersions></versioning></metadata> to close start tag <extension> from line 17 and start tag <snapshotVersion> from line 16 and start tag <snapshotVersions> from line 10 and start tag <versioning> from line 5 and start tag <metadata> from line 2, parser stopped on TEXT seen ...<extension>jar</ex... @17:27 -> [Help 1]
+162.4 [ERROR] 
+162.4 [ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+162.4 [ERROR] Re-run Maven using the -X switch to enable full debug logging.
+162.4 [ERROR] 
+162.4 [ERROR] For more information about the errors and possible solutions, please read the following articles:
+162.4 [ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException
+162.4 [ERROR] 
+162.4 [ERROR] After correcting the problems, you can resume the build with the command
+162.4 [ERROR]   mvn <args> -rf :platform-core
+------
+target outbox-relay: failed to solve: process "/bin/sh -c mvn -B -ntp -q -f platform-libs/pom.xml install -DskipTests" did not complete successfully: exit code: 1
+
+===== tenant-admin
+===== provisioner
+===== iam
+===== audit
+===== partner
+===== irat
+===== webhook
+===== outbox-relay
+===== reporting-projector
+===== gateway-ui
