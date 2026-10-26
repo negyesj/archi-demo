@@ -1,0 +1,5 @@
+branch: service/partner
+commit: 325cf8f884015fade31f015206245b9b137b60b0
+status: success
+run: https://github.com/negyesj/archi-demo/actions/runs/40388807319
+----
