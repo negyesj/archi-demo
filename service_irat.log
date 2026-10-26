@@ -1,5 +1,216 @@
 branch: service/irat
-commit: ea15df851a50aee3db38aa4d2f2a8fef4c648653
+commit: 7bb2378b147db273c01f473234b7acef6c1f9665
 status: success
-run: https://github.com/negyesj/archi-demo/actions/runs/40388805455
+run: https://github.com/negyesj/archi-demo/actions/runs/40389900297
 ----
+[INFO] Scanning for projects...
+[INFO] Loaded 24251 auto-discovered prefixes for remote repository central (prefixes-central.txt)
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] Platform parent POM                                                [pom]
+[INFO] platform-core                                                      [jar]
+[INFO] platform-web                                                       [jar]
+[INFO] platform-reporting                                                 [jar]
+[INFO] Platform shared libraries (aggregator)                             [pom]
+[INFO] 
+[INFO] ------------------< hu.dmsone.archi:platform-parent >-------------------
+[INFO] Building Platform parent POM 0.1.0-SNAPSHOT                        [1/5]
+[INFO]   from platform-parent/pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] Loaded 74 auto-discovered prefixes for remote repository apache.snapshots (prefixes-apache.snapshots.txt)
+[INFO] 
+[INFO] --- install:3.1.4:install (default-install) @ platform-parent ---
+[INFO] Installing /home/runner/work/archi-demo/archi-demo/platform-libs/platform-parent/pom.xml to /home/runner/.m2/repository/hu/dmsone/archi/platform-parent/0.1.0-SNAPSHOT/platform-parent-0.1.0-SNAPSHOT.pom
+[INFO] 
+[INFO] -------------------< hu.dmsone.archi:platform-core >--------------------
+[INFO] Building platform-core 0.1.0-SNAPSHOT                              [2/5]
+[INFO]   from platform-core/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] Loaded 24251 auto-discovered prefixes for remote repository maven-central (prefixes-maven-central.txt)
+[WARNING] Could not transfer metadata /.meta/prefixes.txt from/to flyway-community-db-support (https://maven.pkg.github.com/flyway/flyway-community-db-support): HTTP Status: 401
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ platform-core ---
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] Copying 3 resources from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.14.0:compile (default-compile) @ platform-core ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 26 source files with javac [debug parameters release 21] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ platform-core ---
+[INFO] skip non existing resourceDirectory /home/runner/work/archi-demo/archi-demo/platform-libs/platform-core/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ platform-core ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ platform-core ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ platform-core ---
+[INFO] Building jar: /home/runner/work/archi-demo/archi-demo/platform-libs/platform-core/target/platform-core-0.1.0-SNAPSHOT.jar
+[INFO] 
+[INFO] --- install:3.1.4:install (default-install) @ platform-core ---
+[INFO] Installing /home/runner/work/archi-demo/archi-demo/platform-libs/platform-core/pom.xml to /home/runner/.m2/repository/hu/dmsone/archi/platform-core/0.1.0-SNAPSHOT/platform-core-0.1.0-SNAPSHOT.pom
+[INFO] Installing /home/runner/work/archi-demo/archi-demo/platform-libs/platform-core/target/platform-core-0.1.0-SNAPSHOT.jar to /home/runner/.m2/repository/hu/dmsone/archi/platform-core/0.1.0-SNAPSHOT/platform-core-0.1.0-SNAPSHOT.jar
+[INFO] 
+[INFO] --------------------< hu.dmsone.archi:platform-web >--------------------
+[INFO] Building platform-web 0.1.0-SNAPSHOT                               [3/5]
+[INFO]   from platform-web/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ platform-web ---
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.14.0:compile (default-compile) @ platform-web ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 16 source files with javac [debug parameters release 21] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ platform-web ---
+[INFO] skip non existing resourceDirectory /home/runner/work/archi-demo/archi-demo/platform-libs/platform-web/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ platform-web ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ platform-web ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ platform-web ---
+[INFO] Building jar: /home/runner/work/archi-demo/archi-demo/platform-libs/platform-web/target/platform-web-0.1.0-SNAPSHOT.jar
+[INFO] 
+[INFO] --- install:3.1.4:install (default-install) @ platform-web ---
+[INFO] Installing /home/runner/work/archi-demo/archi-demo/platform-libs/platform-web/pom.xml to /home/runner/.m2/repository/hu/dmsone/archi/platform-web/0.1.0-SNAPSHOT/platform-web-0.1.0-SNAPSHOT.pom
+[INFO] Installing /home/runner/work/archi-demo/archi-demo/platform-libs/platform-web/target/platform-web-0.1.0-SNAPSHOT.jar to /home/runner/.m2/repository/hu/dmsone/archi/platform-web/0.1.0-SNAPSHOT/platform-web-0.1.0-SNAPSHOT.jar
+[INFO] 
+[INFO] -----------------< hu.dmsone.archi:platform-reporting >-----------------
+[INFO] Building platform-reporting 0.1.0-SNAPSHOT                         [4/5]
+[INFO]   from platform-reporting/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ platform-reporting ---
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.14.0:compile (default-compile) @ platform-reporting ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 4 source files with javac [debug parameters release 21] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ platform-reporting ---
+[INFO] skip non existing resourceDirectory /home/runner/work/archi-demo/archi-demo/platform-libs/platform-reporting/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ platform-reporting ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ platform-reporting ---
+[INFO] Tests are skipped.
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ platform-reporting ---
+[INFO] Building jar: /home/runner/work/archi-demo/archi-demo/platform-libs/platform-reporting/target/platform-reporting-0.1.0-SNAPSHOT.jar
+[INFO] 
+[INFO] --- install:3.1.4:install (default-install) @ platform-reporting ---
+[INFO] Installing /home/runner/work/archi-demo/archi-demo/platform-libs/platform-reporting/pom.xml to /home/runner/.m2/repository/hu/dmsone/archi/platform-reporting/0.1.0-SNAPSHOT/platform-reporting-0.1.0-SNAPSHOT.pom
+[INFO] Installing /home/runner/work/archi-demo/archi-demo/platform-libs/platform-reporting/target/platform-reporting-0.1.0-SNAPSHOT.jar to /home/runner/.m2/repository/hu/dmsone/archi/platform-reporting/0.1.0-SNAPSHOT/platform-reporting-0.1.0-SNAPSHOT.jar
+[INFO] 
+[INFO] -------------------< hu.dmsone.archi:platform-libs >--------------------
+[INFO] Building Platform shared libraries (aggregator) 0.1.0-SNAPSHOT     [5/5]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- install:3.2.0:install (default-install) @ platform-libs ---
+[INFO] Installing /home/runner/work/archi-demo/archi-demo/platform-libs/pom.xml to /home/runner/.m2/repository/hu/dmsone/archi/platform-libs/0.1.0-SNAPSHOT/platform-libs-0.1.0-SNAPSHOT.pom
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for Platform shared libraries (aggregator) 0.1.0-SNAPSHOT:
+[INFO] 
+[INFO] Platform parent POM ................................ SUCCESS [  1.961 s]
+[INFO] platform-core ...................................... SUCCESS [  4.349 s]
+[INFO] platform-web ....................................... SUCCESS [  0.768 s]
+[INFO] platform-reporting ................................. SUCCESS [  0.280 s]
+[INFO] Platform shared libraries (aggregator) ............. SUCCESS [  0.057 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  8.093 s
+[INFO] Finished at: 2026-10-26T19:50:19Z
+[INFO] ------------------------------------------------------------------------
+[INFO] Scanning for projects...
+[INFO] Loaded 24251 auto-discovered prefixes for remote repository central (prefixes-central.txt)
+[INFO] 
+[INFO] --------------------< hu.dmsone.archi:service-irat >--------------------
+[INFO] Building service-irat 0.1.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] Loaded 74 auto-discovered prefixes for remote repository apache.snapshots (prefixes-apache.snapshots.txt)
+[INFO] Loaded 24251 auto-discovered prefixes for remote repository maven-central (prefixes-maven-central.txt)
+[WARNING] Could not transfer metadata /.meta/prefixes.txt from/to flyway-community-db-support (https://maven.pkg.github.com/flyway/flyway-community-db-support): HTTP Status: 401
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ service-irat ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 2 resources from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.14.0:compile (default-compile) @ service-irat ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 10 source files with javac [debug parameters release 21] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ service-irat ---
+[INFO] skip non existing resourceDirectory /home/runner/work/archi-demo/archi-demo/service-irat/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ service-irat ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ service-irat ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ service-irat ---
+[INFO] Building jar: /home/runner/work/archi-demo/archi-demo/service-irat/target/service-irat-0.1.0-SNAPSHOT.jar
+[INFO] 
+[INFO] --- spring-boot:3.5.6:repackage (repackage) @ service-irat ---
+[INFO] Loaded 50 auto-discovered prefixes for remote repository ow2-snapshot (prefixes-ow2-snapshot.txt)
+[INFO] Replacing main artifact /home/runner/work/archi-demo/archi-demo/service-irat/target/service-irat-0.1.0-SNAPSHOT.jar with repackaged archive, adding nested dependencies in BOOT-INF/.
+[INFO] The original artifact has been renamed to /home/runner/work/archi-demo/archi-demo/service-irat/target/service-irat-0.1.0-SNAPSHOT.jar.original
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  5.005 s
+[INFO] Finished at: 2026-10-26T19:50:25Z
+[INFO] ------------------------------------------------------------------------
+
+#13 [stage-1 2/4] RUN groupadd -r app && useradd -r -g app -u 10001 app
+#13 ...
+
+#10 [build 1/6] FROM docker.io/library/maven:3.9-eclipse-temurin-21@sha256:99e61abcff91a9b1333463bd8451fb18495d6eba9250ac66a338b518f8278320
+#10 extracting sha256:a466b9e11010eac13b4d1ac50894b683c5fbc95be50dc4dedcdec9c979f98f96 done
+#10 extracting sha256:405aa165b3ac61a5d93c2398a95cdd881401cceda86849dde23f6293310b70c0 done
+#10 DONE 18.0s
+
+#14 [build 2/6] WORKDIR /src
+#14 DONE 0.0s
+
+#15 [build 3/6] COPY platform-libs/ platform-libs/
+#15 DONE 0.1s
+
+#13 [stage-1 2/4] RUN groupadd -r app && useradd -r -g app -u 10001 app
+#13 0.335 useradd warning: app's uid 10001 is greater than SYS_UID_MAX 999
+#13 DONE 0.4s
+
+#16 [stage-1 3/4] WORKDIR /app
+#16 DONE 0.0s
+
+#17 [build 4/6] RUN --mount=type=cache,target=/root/.m2 mvn -B -ntp -q -f platform-libs/pom.xml install -DskipTests
+#17 DONE 28.6s
+
+#18 [build 5/6] COPY service-irat/ svc/
+#18 DONE 0.7s
+
+#19 [build 6/6] RUN --mount=type=cache,target=/root/.m2 mvn -B -ntp -q -f svc/pom.xml package -DskipTests     && cp svc/target/*.jar /app.jar
+#19 DONE 9.4s
+
+#20 [stage-1 4/4] COPY --from=build /app.jar /app/app.jar
+#20 DONE 0.8s
+
+#21 exporting to image
+#21 exporting layers
+#21 exporting layers 0.7s done
+#21 writing image sha256:b6ae993d3f31a6a95f8ccf06629e499c32c89d2904805716cad7c235a04e60dd done
+#21 naming to docker.io/library/service-irat:ci done
+#21 DONE 0.7s
