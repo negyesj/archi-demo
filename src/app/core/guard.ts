@@ -4,10 +4,12 @@ import { AuthService } from './auth';
 import { AdminApi } from './admin-api';
 
 export const adminGuard: CanActivateFn = async () => {
-  if (!(await inject(AuthService).ensureLoggedIn())) {
+  // Az inject() csak szinkron, az első await előtt hívható (utána már nincs injection context: NG0203).
+  const auth = inject(AuthService);
+  const api = inject(AdminApi);
+  if (!(await auth.ensureLoggedIn())) {
     return false;
   }
-  const api = inject(AdminApi);
   if (!api.me()) {
     await api.loadMe();
   }
