@@ -5,9 +5,9 @@ FROM maven:3.9-eclipse-temurin-21 AS build
 ARG SERVICE_DIR
 WORKDIR /src
 COPY platform-libs/ platform-libs/
-RUN --mount=type=cache,target=/root/.m2 mvn -B -ntp -q -f platform-libs/pom.xml install -DskipTests
+RUN --mount=type=cache,target=/root/.m2,sharing=locked mvn -B -ntp -q -f platform-libs/pom.xml install -DskipTests
 COPY ${SERVICE_DIR}/ svc/
-RUN --mount=type=cache,target=/root/.m2 mvn -B -ntp -q -f svc/pom.xml package -DskipTests \
+RUN --mount=type=cache,target=/root/.m2,sharing=locked mvn -B -ntp -q -f svc/pom.xml package -DskipTests \
     && cp svc/target/*.jar /app.jar
 
 FROM eclipse-temurin:21-jre
