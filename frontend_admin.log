@@ -1,64 +1,64 @@
 branch: frontend/admin
-commit: cba091dbb61fd6a3393ae7cf33363ff6f9c0b3b1
+commit: d4377f928de10b8bee0170d4ea579aa3aefbd588
 status: success
-run: https://github.com/negyesj/archi-demo/actions/runs/40398208821
+run: https://github.com/negyesj/archi-demo/actions/runs/40413150196
 ----
 
-added 239 packages in 9s
+added 239 packages in 4s
 ❯ Building...
 ✔ Building...
 Initial chunk files | Names         |  Raw size | Estimated transfer size
-main-ZVNWJLGY.js    | main          | 449.60 kB |                90.47 kB
+main-E5YFKAN6.js    | main          | 449.60 kB |                90.46 kB
 chunk-liAQYoGT.js   | -             | 228.24 kB |                65.52 kB
 styles-LGOVDS6P.css | styles        |  25.45 kB |                 3.62 kB
 
-                    | Initial total | 703.29 kB |               159.61 kB
+                    | Initial total | 703.28 kB |               159.60 kB
 
 Lazy chunk files    | Names         |  Raw size | Estimated transfer size
-chunk-D3NC31_0.js   | audit         | 113.53 kB |                21.81 kB
-chunk-CAACeOdv.js   | -             |  71.41 kB |                12.18 kB
-chunk-CMLoAm8l.js   | -             |  40.83 kB |                 8.71 kB
-chunk-BQCPVXdh.js   | admin-users   |  31.60 kB |                 5.92 kB
-chunk-rspfoSwH.js   | -             |  30.07 kB |                 7.08 kB
-chunk-DotIn5qp.js   | -             |  29.33 kB |                 4.95 kB
-chunk-BYh27BXR.js   | -             |  26.54 kB |                 7.03 kB
-chunk-BUMgdoj-.js   | tenant-detail |  15.10 kB |                 3.97 kB
-chunk-CAHXMbd8.js   | tenants       |   6.72 kB |                 2.44 kB
-chunk-DZbL1-oa.js   | loglevels     |   6.13 kB |                 2.01 kB
-chunk-CR0UGF_3.js   | catalog       |   2.72 kB |                 1.06 kB
-chunk-B5dalMeD.js   | -             |   1.63 kB |               671 bytes
+chunk-DdPCr52t.js   | audit         | 113.53 kB |                21.80 kB
+chunk-Dcu_dbn5.js   | -             |  71.41 kB |                12.17 kB
+chunk-Iud91uES.js   | -             |  40.83 kB |                 8.69 kB
+chunk-D1TWlzRj.js   | admin-users   |  31.60 kB |                 5.91 kB
+chunk-DUWshLMX.js   | -             |  30.07 kB |                 7.08 kB
+chunk-rHpxW0Dm.js   | -             |  29.33 kB |                 4.95 kB
+chunk-DQ8qlu4E.js   | -             |  26.54 kB |                 7.03 kB
+chunk-C_mC3asU.js   | tenant-detail |  15.10 kB |                 3.98 kB
+chunk-BRbZVaaw.js   | tenants       |   6.72 kB |                 2.45 kB
+chunk-BtWcGE0M.js   | loglevels     |   6.13 kB |                 2.01 kB
+chunk-B6wTGj0V.js   | catalog       |   2.72 kB |                 1.06 kB
+chunk-qU21JchV.js   | -             |   1.63 kB |               662 bytes
 
-Application bundle generation complete. [8.207 seconds] - 2026-10-26T20:44:09.504Z
+Application bundle generation complete. [5.111 seconds] - 2026-10-26T22:32:15.265Z
 
 Output location: /home/runner/work/archi-demo/archi-demo/dist/frontend-admin
 
-#19 10.25 chunk-CAACeOdv.js   | -             |  71.41 kB |                12.18 kB
-#19 10.25 chunk-CMLoAm8l.js   | -             |  40.83 kB |                 8.71 kB
-#19 10.25 chunk-BQCPVXdh.js   | admin-users   |  31.60 kB |                 5.92 kB
-#19 10.25 chunk-rspfoSwH.js   | -             |  30.07 kB |                 7.08 kB
-#19 10.25 chunk-DotIn5qp.js   | -             |  29.33 kB |                 4.95 kB
-#19 10.25 chunk-BYh27BXR.js   | -             |  26.54 kB |                 7.03 kB
-#19 10.25 chunk-BUMgdoj-.js   | tenant-detail |  15.10 kB |                 3.97 kB
-#19 10.25 chunk-CAHXMbd8.js   | tenants       |   6.72 kB |                 2.44 kB
-#19 10.25 chunk-DZbL1-oa.js   | loglevels     |   6.13 kB |                 2.01 kB
-#19 10.25 chunk-CR0UGF_3.js   | catalog       |   2.72 kB |                 1.06 kB
-#19 10.25 chunk-B5dalMeD.js   | -             |   1.63 kB |               671 bytes
-#19 10.25 
-#19 10.25 Application bundle generation complete. [8.899 seconds] - 2026-10-26T20:44:37.360Z
-#19 10.25 
-#19 10.26 Output location: /src/dist/frontend-admin
-#19 10.26 
-#19 DONE 10.5s
+#19 5.983 chunk-Dcu_dbn5.js   | -             |  71.41 kB |                12.17 kB
+#19 5.983 chunk-Iud91uES.js   | -             |  40.83 kB |                 8.69 kB
+#19 5.983 chunk-D1TWlzRj.js   | admin-users   |  31.60 kB |                 5.91 kB
+#19 5.983 chunk-DUWshLMX.js   | -             |  30.07 kB |                 7.08 kB
+#19 5.983 chunk-rHpxW0Dm.js   | -             |  29.33 kB |                 4.95 kB
+#19 5.983 chunk-DQ8qlu4E.js   | -             |  26.54 kB |                 7.03 kB
+#19 5.983 chunk-C_mC3asU.js   | tenant-detail |  15.10 kB |                 3.98 kB
+#19 5.983 chunk-BRbZVaaw.js   | tenants       |   6.72 kB |                 2.45 kB
+#19 5.983 chunk-BtWcGE0M.js   | loglevels     |   6.13 kB |                 2.01 kB
+#19 5.983 chunk-B6wTGj0V.js   | catalog       |   2.72 kB |                 1.06 kB
+#19 5.983 chunk-qU21JchV.js   | -             |   1.63 kB |               662 bytes
+#19 5.983 
+#19 5.983 Application bundle generation complete. [5.210 seconds] - 2026-10-26T22:32:40.917Z
+#19 5.983 
+#19 5.987 Output location: /src/dist/frontend-admin
+#19 5.987 
+#19 DONE 6.3s
 
 #20 [stage-1 4/5] COPY --from=build /src/dist/frontend-admin/browser /usr/share/nginx/html
-#20 DONE 0.0s
+#20 DONE 0.1s
 
 #21 [stage-1 5/5] RUN rm -f /etc/nginx/conf.d/default.conf && chown -R nginx:nginx /usr/share/nginx/html
 #21 DONE 0.2s
 
 #22 exporting to image
 #22 exporting layers
-#22 exporting layers 0.3s done
-#22 writing image sha256:db66b83343e90bd467479575e4b20d88b1ea234ade8aca754cb38ba3c21f8370 done
+#22 exporting layers 0.5s done
+#22 writing image sha256:05b36babf1764a3bafeac39e1d830cd06b818eb44a1abefbac146c148a032aaf done
 #22 naming to docker.io/library/frontend-admin:ci done
-#22 DONE 0.3s
+#22 DONE 0.5s
