@@ -357,7 +357,7 @@ Minden komponens Docker image vagy nyílt protokollú, konténerben futtatható 
 
 ### GCP SaaS környezet
 
-Egy EU-s régióban (javaslat: `europe-central2` Varó, vagy `europe-west3` Frankfurt) fut minden komponens; környezetenként (dev, test, prod) külön GCP projekt. A belső szolgáltatások csak belső ingressen, az adattárak csak privát hálózaton érhetők el (Direct VPC egress, Private Service Connect).
+Egy EU-s régióban (választott: `europe-west1` Belgium) fut minden komponens; környezetenként (dev, test, prod) külön GCP projekt. A belső szolgáltatások csak belső ingressen, az adattárak csak privát hálózaton érhetők el (Direct VPC egress, Private Service Connect).
 
 ### CI/CD
 
