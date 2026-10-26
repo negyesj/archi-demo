@@ -13,7 +13,7 @@ for i in 1 2 3 4 5; do
   fi
   cd "$WORK/cil"
   git config user.name "ci-bot"; git config user.email "ci-bot@users.noreply.github.com"
-  { echo "branch: ${GITHUB_REF_NAME}"; echo "commit: ${GITHUB_SHA}"; echo "status: ${STATUS}"; echo "run: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"; echo "----"; tail -n 600 "$LOG"; } > "${SAFE}.log"
+  { echo "branch: ${GITHUB_REF_NAME}"; echo "commit: ${GITHUB_SHA}"; echo "status: ${STATUS}"; echo "run: ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"; echo "----"; tail -n 2500 "$LOG"; } > "${SAFE}.log"
   echo "${STATUS} ${GITHUB_SHA}" > "${SAFE}.status"
   git add -A && git commit -q -m "ci: ${GITHUB_REF_NAME} ${STATUS} ${GITHUB_SHA:0:7}" || exit 0
   if git push -q origin ci-logs 2>/dev/null; then exit 0; fi

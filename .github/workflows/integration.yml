@@ -25,18 +25,17 @@ jobs:
         run: |
           set -o pipefail
           docker compose up -d 2>&1 | tee -a build.log
-          sleep 90
-          docker compose ps 2>&1 | tee -a build.log
       - name: Füstteszt
         run: |
           set -o pipefail
-          ./scripts/smoke-test.sh 2>&1 | tee -a build.log
+          TIMEOUT=900 ./scripts/smoke-test.sh 2>&1 | tee -a build.log
       - name: Konténer logok
         if: always()
         run: |
-          for s in tenant-admin provisioner iam audit partner irat webhook outbox-relay reporting-projector gateway-ui; do
+          docker compose ps >> build.log 2>&1
+          for s in keycloak tenant-admin provisioner iam audit partner irat webhook outbox-relay reporting-projector gateway-ui; do
             echo "===== $s" >> build.log
-            docker compose logs --no-color --tail 80 $s >> build.log 2>&1 || true
+            docker compose logs --no-color --tail 60 $s | grep -vE 'Group coordinator|JoinGroup|NOT_COORDINATOR' | cut -c1-600 >> build.log 2>&1 || true
           done
       - name: Napló publikálása
         if: always()
