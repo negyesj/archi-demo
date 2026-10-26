@@ -1,0 +1,45 @@
+name: integration
+# Az összes branch összerakása, minden image buildje, a teljes környezet indítása és füstteszt.
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Workspace összerakása
+        run: ./scripts/assemble.sh 2>&1 | tee build.log
+      - name: Image-ek buildje
+        run: |
+          set -o pipefail
+          cp .env.example .env
+          docker compose build 2>&1 | tail -n 200 | tee -a build.log
+      - name: Környezet indítása
+        run: |
+          set -o pipefail
+          docker compose up -d 2>&1 | tee -a build.log
+          sleep 90
+          docker compose ps 2>&1 | tee -a build.log
+      - name: Füstteszt
+        run: |
+          set -o pipefail
+          ./scripts/smoke-test.sh 2>&1 | tee -a build.log
+      - name: Konténer logok
+        if: always()
+        run: |
+          for s in tenant-admin provisioner iam audit partner irat webhook outbox-relay reporting-projector gateway-ui; do
+            echo "===== $s" >> build.log
+            docker compose logs --no-color --tail 80 $s >> build.log 2>&1 || true
+          done
+      - name: Napló publikálása
+        if: always()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: .github/scripts/publish-log.sh build.log ${{ job.status }}

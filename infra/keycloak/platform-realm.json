@@ -1,0 +1,40 @@
+{
+  "realm": "platform",
+  "displayName": "Platform admin",
+  "enabled": true,
+  "sslRequired": "external",
+  "registrationAllowed": false,
+  "bruteForceProtected": true,
+  "clients": [
+    {
+      "clientId": "admin-ui",
+      "name": "Tenant admin felület",
+      "enabled": true,
+      "publicClient": true,
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": false,
+      "redirectUris": ["http://localhost:4300/*"],
+      "webOrigins": ["+"],
+      "attributes": { "pkce.code.challenge.method": "S256", "post.logout.redirect.uris": "+" }
+    },
+    {
+      "clientId": "platform-cli",
+      "name": "Fejlesztői/teszt kliens (csak fejlesztői környezetben!)",
+      "enabled": true,
+      "publicClient": true,
+      "standardFlowEnabled": false,
+      "directAccessGrantsEnabled": true
+    }
+  ],
+  "users": [
+    {
+      "username": "admin",
+      "email": "admin@example.local",
+      "firstName": "Platform",
+      "lastName": "Admin",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [ { "type": "password", "value": "admin", "temporary": false } ]
+    }
+  ]
+}

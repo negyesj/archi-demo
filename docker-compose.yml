@@ -1,0 +1,239 @@
+# Teljes platform Docker Compose-zal (fejlesztés, demó, kis on-prem telepítés).
+# Előfeltétel: ./scripts/assemble.sh (összerakja a branchekből a workspace/ mappát) és .env (.env.example alapján).
+#
+# Böngészőből:  felhasználói felület http://localhost:4200   tenant admin http://localhost:4300
+#               publikus API http://localhost:8090/v1/...    Keycloak http://localhost:8180
+#               Grafana (log, trace) http://localhost:3000
+
+name: archi
+
+x-backend-env: &backend-env
+  KAFKA_BOOTSTRAP: kafka:9092
+  REDIS_HOST: redis
+  PLATFORM_DB_URL: jdbc:postgresql://postgres:5432/platform
+  PLATFORM_DB_USER: platform_app
+  PLATFORM_DB_PASSWORD: platform_app
+  PLATFORM_SECRET_KEY: ${PLATFORM_SECRET_KEY:?PLATFORM_SECRET_KEY kötelező (.env)}
+  TENANT_DB_HOST: postgres
+  TENANT_DB_PORT: "5432"
+  MONGO_HOST: mongo
+  MONGO_PORT: "27017"
+  KEYCLOAK_PUBLIC_URL: ${KEYCLOAK_PUBLIC_URL:-http://localhost:8180}
+  KEYCLOAK_INTERNAL_URL: http://keycloak:8080
+  KEYCLOAK_ADMIN_USER: ${KEYCLOAK_ADMIN_USER:-admin}
+  KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:-admin}
+  IAM_BASE_URL: http://iam:8080
+  PARTNER_URI: http://partner:8080
+  OTLP_TRACES_ENDPOINT: http://otel-lgtm:4318/v1/traces
+  TRACING_SAMPLING: "1.0"
+
+x-backend: &backend
+  restart: on-failure
+  depends_on:
+    postgres: { condition: service_healthy }
+    kafka: { condition: service_healthy }
+    redis: { condition: service_started }
+    mongo: { condition: service_started }
+
+services:
+  # ---------------- Infrastruktúra ----------------
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./infra/postgres:/docker-entrypoint-initdb.d:ro
+    ports: ["5432:5432"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      retries: 20
+
+  mongo:
+    image: mongo:7
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    volumes: [mongodata:/data/db]
+    ports: ["27017:27017"]
+
+  kafka:
+    image: apache/kafka:3.9.1
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_LISTENERS: PLAINTEXT://:9092,CONTROLLER://:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_NUM_PARTITIONS: 6
+    volumes: [kafkadata:/var/lib/kafka/data]
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/kafka/bin/kafka-broker-api-versions.sh --bootstrap-server localhost:9092 > /dev/null 2>&1"]
+      interval: 10s
+      retries: 20
+
+  redis:
+    image: redis:7-alpine
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.4
+    command: ["start-dev", "--import-realm"]
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: ${KEYCLOAK_ADMIN_USER:-admin}
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:-admin}
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres:5432/keycloak
+      KC_DB_USERNAME: keycloak
+      KC_DB_PASSWORD: keycloak
+      KC_HOSTNAME: ${KEYCLOAK_PUBLIC_URL:-http://localhost:8180}
+      KC_HOSTNAME_BACKCHANNEL_DYNAMIC: "true"
+      KC_HEALTH_ENABLED: "true"
+    volumes:
+      - ./infra/keycloak:/opt/keycloak/data/import:ro
+    ports: ["8180:8080"]
+    depends_on:
+      postgres: { condition: service_healthy }
+
+  # Log, trace, metrika egy konténerben (OpenTelemetry Collector + Loki + Tempo + Prometheus + Grafana).
+  # Éles on-prem környezetben külön Loki/Tempo/Prometheus vagy az ügyfél meglévő ELK rendszere.
+  otel-lgtm:
+    image: grafana/otel-lgtm:latest
+    ports: ["3000:3000", "4317:4317", "4318:4318"]
+
+  # ---------------- Platform ----------------
+  gateway-ui:
+    <<: *backend
+    build: { context: ./workspace, dockerfile: service-gateway/Dockerfile, args: { SERVICE_DIR: service-gateway } }
+    image: archi/gateway:dev
+    environment:
+      <<: *backend-env
+      GATEWAY_MODE: ui
+      TENANT_ADMIN_URI: http://tenant-admin:8080
+      IAM_URI: http://iam:8080
+      AUDIT_URI: http://audit:8080
+      PARTNER_URI: http://partner:8080
+      IRAT_URI: http://irat:8080
+      WEBHOOK_URI: http://webhook:8080
+    ports: ["8080:8080"]
+
+  gateway-public:
+    <<: *backend
+    image: archi/gateway:dev
+    environment:
+      <<: *backend-env
+      GATEWAY_MODE: public
+      IAM_URI: http://iam:8080
+      AUDIT_URI: http://audit:8080
+      PARTNER_URI: http://partner:8080
+      IRAT_URI: http://irat:8080
+      WEBHOOK_URI: http://webhook:8080
+      RATE_LIMIT_RPS: "20"
+      RATE_LIMIT_BURST: "40"
+    ports: ["8090:8080"]
+    depends_on:
+      gateway-ui: { condition: service_started }
+      kafka: { condition: service_healthy }
+
+  tenant-admin:
+    <<: *backend
+    build: { context: ./workspace, dockerfile: service-tenant-admin/Dockerfile, args: { SERVICE_DIR: service-tenant-admin } }
+    image: archi/tenant-admin:dev
+    environment:
+      <<: *backend-env
+
+  provisioner:
+    <<: *backend
+    build: { context: ./workspace, dockerfile: service-provisioner/Dockerfile, args: { SERVICE_DIR: service-provisioner } }
+    image: archi/provisioner:dev
+    environment:
+      <<: *backend-env
+      PG_ADMIN_URL: jdbc:postgresql://postgres:5432/postgres
+      PG_ADMIN_USER: postgres
+      PG_ADMIN_PASSWORD: postgres
+      MONGO_ADMIN_URI: mongodb://root:root@mongo:27017/admin
+      APP_REDIRECT_URIS: http://localhost:4200/*
+
+  # ---------------- Tenant alapszolgáltatások ----------------
+  iam:
+    <<: *backend
+    build: { context: ./workspace, dockerfile: service-iam/Dockerfile, args: { SERVICE_DIR: service-iam } }
+    image: archi/iam:dev
+    environment:
+      <<: *backend-env
+
+  audit:
+    <<: *backend
+    build: { context: ./workspace, dockerfile: service-audit/Dockerfile, args: { SERVICE_DIR: service-audit } }
+    image: archi/audit:dev
+    environment:
+      <<: *backend-env
+
+  webhook:
+    <<: *backend
+    build: { context: ./workspace, dockerfile: service-webhook/Dockerfile, args: { SERVICE_DIR: service-webhook } }
+    image: archi/webhook:dev
+    environment:
+      <<: *backend-env
+      WEBHOOK_ALLOW_HTTP: ${WEBHOOK_ALLOW_HTTP:-false}
+
+  # ---------------- Üzleti szolgáltatások ----------------
+  partner:
+    <<: *backend
+    build: { context: ./workspace, dockerfile: service-partner/Dockerfile, args: { SERVICE_DIR: service-partner } }
+    image: archi/partner:dev
+    environment:
+      <<: *backend-env
+
+  irat:
+    <<: *backend
+    build: { context: ./workspace, dockerfile: service-irat/Dockerfile, args: { SERVICE_DIR: service-irat } }
+    image: archi/irat:dev
+    environment:
+      <<: *backend-env
+
+  # ---------------- Worker konténerek ----------------
+  outbox-relay:
+    <<: *backend
+    build: { context: ./workspace, dockerfile: worker-outbox-relay/Dockerfile, args: { SERVICE_DIR: worker-outbox-relay } }
+    image: archi/outbox-relay:dev
+    environment:
+      <<: *backend-env
+
+  reporting-projector:
+    <<: *backend
+    build: { context: ./workspace, dockerfile: worker-reporting-projector/Dockerfile, args: { SERVICE_DIR: worker-reporting-projector } }
+    image: archi/reporting-projector:dev
+    environment:
+      <<: *backend-env
+
+  # ---------------- Frontendek ----------------
+  frontend-app:
+    build: { context: ./workspace/frontend-app }
+    image: archi/frontend-app:dev
+    environment:
+      API_UPSTREAM: http://gateway-ui:8080
+      KEYCLOAK_PUBLIC_URL: ${KEYCLOAK_PUBLIC_URL:-http://localhost:8180}
+    ports: ["4200:8080"]
+    depends_on: [gateway-ui]
+
+  frontend-admin:
+    build: { context: ./workspace/frontend-admin }
+    image: archi/frontend-admin:dev
+    environment:
+      API_UPSTREAM: http://gateway-ui:8080
+      KEYCLOAK_PUBLIC_URL: ${KEYCLOAK_PUBLIC_URL:-http://localhost:8180}
+    ports: ["4300:8080"]
+    depends_on: [gateway-ui]
+
+volumes:
+  pgdata:
+  mongodata:
+  kafkadata:

@@ -1,0 +1,14 @@
+# branch                        workspace mappa (a / helyett -)
+platform/libs
+service/gateway
+service/tenant-admin
+service/provisioner
+service/iam
+service/audit
+service/webhook
+service/partner
+service/irat
+worker/outbox-relay
+worker/reporting-projector
+frontend/app
+frontend/admin
