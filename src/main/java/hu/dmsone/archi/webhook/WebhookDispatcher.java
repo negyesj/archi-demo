@@ -5,6 +5,9 @@ import hu.dmsone.archi.platform.db.TenantMigrator;
 import hu.dmsone.archi.platform.tenant.TenantContext;
 import hu.dmsone.archi.platform.tenant.TenantInfo;
 import hu.dmsone.archi.platform.tenant.TenantRegistry;
+import hu.dmsone.archi.platform.trail.TrailKind;
+import hu.dmsone.archi.platform.trail.TrailRecorder;
+import hu.dmsone.archi.platform.trail.TrailStep;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -19,6 +22,7 @@ import org.springframework.web.client.RestClientResponseException;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
@@ -37,7 +41,8 @@ public class WebhookDispatcher {
 
     private static final Logger log = LoggerFactory.getLogger(WebhookDispatcher.class);
 
-    private record Due(UUID id, UUID subscriptionId, String url, String eventType, String payload, int attempts) { }
+    private record Due(UUID id, UUID subscriptionId, String url, String eventType, String payload, int attempts,
+                       String traceId, String parentSpanId, Instant createdAt, Instant occurredAt) { }
 
     private final TenantRegistry registry;
     private final TenantMigrator migrator;
@@ -46,9 +51,12 @@ public class WebhookDispatcher {
     private final SecretProvider secrets;
     private final WebhookProperties props;
     private final RestClient http;
+    private final TrailRecorder trail;
 
     public WebhookDispatcher(TenantRegistry registry, TenantMigrator migrator, JdbcClient jdbc, TransactionTemplate tx,
-                             SecretProvider secrets, WebhookProperties props, RestClient.Builder builder) {
+                             SecretProvider secrets, WebhookProperties props, RestClient.Builder builder,
+                             TrailRecorder trail) {
+        this.trail = trail;
         this.registry = registry;
         this.migrator = migrator;
         this.jdbc = jdbc;
@@ -78,12 +86,16 @@ public class WebhookDispatcher {
     private void dispatchTenant() {
         tx.executeWithoutResult(status -> {
             List<Due> due = jdbc.sql("""
-                    select d.id, d.subscription_id, s.url, d.event_type, d.payload::text as payload, d.attempts
+                    select d.id, d.subscription_id, s.url, d.event_type, d.payload::text as payload, d.attempts,
+                        d.trace_id, d.parent_span_id, d.created_at, d.event_occurred_at
                     from webhook.delivery d join webhook.subscription s on s.id = d.subscription_id
                     where d.status = 'PENDING' and d.next_attempt_at <= now() and s.active and not s.suspended
                     order by d.next_attempt_at limit 50 for update of d skip locked
                     """).query((rs, i) -> new Due(rs.getObject("id", UUID.class), rs.getObject("subscription_id", UUID.class),
-                    rs.getString("url"), rs.getString("event_type"), rs.getString("payload"), rs.getInt("attempts"))).list();
+                    rs.getString("url"), rs.getString("event_type"), rs.getString("payload"), rs.getInt("attempts"),
+                    rs.getString("trace_id"), rs.getString("parent_span_id"), rs.getTimestamp("created_at").toInstant(),
+                    rs.getTimestamp("event_occurred_at") == null ? null : rs.getTimestamp("event_occurred_at").toInstant()))
+                    .list();
             for (Due d : due) {
                 deliver(d);
             }
@@ -96,6 +108,8 @@ public class WebhookDispatcher {
         String timestamp = Long.toString(Instant.now().getEpochSecond());
         Integer statusCode = null;
         String error = null;
+        Instant sendStart = Instant.now();
+        long t0 = System.nanoTime();
         try {
             var response = http.post().uri(d.url())
                     .contentType(MediaType.APPLICATION_JSON)
@@ -113,6 +127,7 @@ public class WebhookDispatcher {
         } catch (Exception e) {
             error = e.getClass().getSimpleName() + ": " + e.getMessage();
         }
+        trailDelivery(d, sendStart, t0, statusCode, error);
         if (error == null) {
             jdbc.sql("""
                     update webhook.delivery set status = 'SUCCEEDED', attempts = attempts + 1, last_status = :s,
@@ -135,6 +150,26 @@ public class WebhookDispatcher {
                     suspended = (consecutive_failures + 1 >= :limit), updated_at = now() where id = :id
                 """).param("limit", props.suspendAfterFailures()).param("id", d.subscriptionId()).update();
         log.warn("Webhook kézbesítés sikertelen ({}. próbálkozás): {} {}", attempts, d.eventType(), error);
+    }
+
+    /** Trail lépés: várakozás = a kézbesítési sor létrejöttétől a küldésig, e2e = az üzleti művelettől. */
+    private void trailDelivery(Due d, Instant sendStart, long t0, Integer statusCode, String error) {
+        if (d.traceId() == null) {
+            return;
+        }
+        long duration = (System.nanoTime() - t0) / 1_000_000;
+        String host;
+        try {
+            host = URI.create(d.url()).getHost();
+        } catch (Exception e) {
+            host = "?";
+        }
+        trail.record(new TrailStep(TenantContext.require(), d.traceId(), TrailRecorder.newId(8), d.parentSpanId(),
+                trail.service(), TrailKind.WEBHOOK, "deliver " + d.eventType(), host, sendStart, duration,
+                Math.max(0, sendStart.toEpochMilli() - d.createdAt().toEpochMilli()),
+                d.occurredAt() == null ? null : Math.max(0, sendStart.toEpochMilli() + duration - d.occurredAt().toEpochMilli()),
+                error == null ? "OK" : "ERROR", error != null ? error : "HTTP " + statusCode + " (" + (d.attempts() + 1) + ". próbálkozás)",
+                false, null));
     }
 
     static String hmac(String secret, String data) {

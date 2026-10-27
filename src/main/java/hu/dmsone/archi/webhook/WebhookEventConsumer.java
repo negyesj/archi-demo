@@ -7,6 +7,7 @@ import hu.dmsone.archi.platform.event.EventEnvelope;
 import hu.dmsone.archi.platform.kafka.Topics;
 import hu.dmsone.archi.platform.tenant.TenantContext;
 import hu.dmsone.archi.platform.tenant.TenantRegistry;
+import hu.dmsone.archi.platform.trail.TrailRecorder;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -27,9 +28,11 @@ public class WebhookEventConsumer {
     private final JdbcClient jdbc;
     private final TenantRegistry registry;
     private final TenantMigrator migrator;
+    private final TrailRecorder trail;
 
     public WebhookEventConsumer(ObjectMapper objectMapper, SubscriptionService subscriptions, JdbcClient jdbc,
-                                TenantRegistry registry, TenantMigrator migrator) {
+                                TenantRegistry registry, TenantMigrator migrator, TrailRecorder trail) {
+        this.trail = trail;
         this.objectMapper = objectMapper;
         this.subscriptions = subscriptions;
         this.jdbc = jdbc;
@@ -53,15 +56,24 @@ public class WebhookEventConsumer {
             migrator.migrate(tenant.get());
         }
         String type = eventType(e);
-        TenantContext.runAs(e.tenantId(), () -> {
-            for (SubscriptionService.Subscription s : subscriptions.matching(type)) {
-                jdbc.sql("""
-                        insert into webhook.delivery (id, subscription_id, event_id, event_type, payload, status)
-                        values (:id, :sid, :eid, :type, cast(:payload as jsonb), 'PENDING')
-                        on conflict (subscription_id, event_id) do nothing
-                        """).param("id", UUID.randomUUID()).param("sid", s.id()).param("eid", e.eventId())
-                        .param("type", type).param("payload", publicPayload(e, type)).update();
-            }
+        String[] trace = TrailRecorder.traceparent(e.traceparent());
+        trail.consume(e, rec, () -> {
+            TenantContext.runAs(e.tenantId(), () -> {
+                for (SubscriptionService.Subscription s : subscriptions.matching(type)) {
+                    jdbc.sql("""
+                            insert into webhook.delivery (id, subscription_id, event_id, event_type, payload, status,
+                                trace_id, parent_span_id, event_occurred_at)
+                            values (:id, :sid, :eid, :type, cast(:payload as jsonb), 'PENDING', :traceId, :parent, :occurred)
+                            on conflict (subscription_id, event_id) do nothing
+                            """).param("id", UUID.randomUUID()).param("sid", s.id()).param("eid", e.eventId())
+                            .param("type", type).param("payload", publicPayload(e, type))
+                            .param("traceId", trace == null ? null : trace[0])
+                            .param("parent", trace == null ? null : trace[1])
+                            .param("occurred", java.sql.Timestamp.from(e.occurredAt()))
+                            .update();
+                }
+            });
+            return null;
         });
     }
 
