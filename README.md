@@ -63,6 +63,8 @@ docker compose up -d --build
   → audit (PostgreSQL `audit` séma), reporting-projector (MongoDB `rpt_<tenant>`), webhook.
 - **Jogosultság:** Keycloak csak hitelesít; a jogosultsági elemeket az IAM adja (`/iam/me/context`, Redis cache,
   változáskor azonnali érvénytelenítés). Nem függ a felhő IAM-től.
+- **Műveleti trail:** minden művelet lépései (gateway, HTTP, SQL, Kafka, MongoDB, webhook) időméréssel a tenant
+  felületén (Adminisztráció → Műveleti trail), órás/napi átlagokkal; `platform.trail` topic → `rpt_<tenant>.trail_*`.
 - **Naplózás:** JSON log `traceId`/`tenantId`/`userId` mezőkkel; a `traceparent` HTTP-n és Kafka fejlécben is
   továbbmegy, így egy művelet logjai szolgáltatásokon át összekapcsolhatók. Loglevel futás közben állítható
   (tenant admin → Naplózási szintek), akár egy tenantra szűkítve.

@@ -193,6 +193,22 @@ A Spring Boot Actuator `/loggers` végpontja csak egy példányra hat, konténer
 4. A tenantra vagy felhasználóra szűkített DEBUG-ot egy Logback `TurboFilter` valósítja meg az MDC alapján, így egy ügyfél hibájának vizsgálata nem árasztja el a közös logot.
 5. A lejárat után a szint automatikusan visszaáll az alapértelmezettre (pl. INFO), a művelet az admin auditba kerül.
 
+### Műveleti trail (időmérés tenantonként)
+
+A tenant felületén (Adminisztráció → Műveleti trail, jog: `trail.read`) minden művelet visszanézhető: melyik szolgáltatásokat, adatbázisokat, Kafka topicokat érintette, és melyik lépés mennyi ideig tartott, az aszinkron lépésekkel együtt.
+
+| Lépés | Hol mérjük | Mit mutat |
+| --- | --- | --- |
+| `GATEWAY` | gateway (a művelet gyökere) | teljes válaszidő, felhasználó, HTTP státusz |
+| `HTTP` | minden szolgáltatás tenant szűrője | a szolgáltatás feldolgozási ideje (útvonalminta szerint) |
+| `SQL` | a tenant DataSource (JDBC proxy) | utasításonként: adatbázis (`t_<tenant>`), `INSERT irat.kuldemeny` stb. |
+| `KAFKA_PUBLISH` | outbox-relay | várakozás az outboxban (üzleti tranzakció → küldés), küldés ideje |
+| `KAFKA_CONSUME` | audit, reporting-projector, webhook | várakozás a Kafkában, feldolgozás ideje, e2e az üzleti művelettől |
+| `MONGO` | reporting-projector | riport dokumentum írása; e2e = mikor került ki a NoSQL-be |
+| `WEBHOOK` | webhook kézbesítő | kézbesítés ideje, várakozás, e2e |
+
+Működés: a lépések a `traceId`-hoz (W3C trace context, az eseményborítékban `traceparent`) kapcsolódnak. A szolgáltatások a lépéseket memóriában gyűjtik, és másodpercenként, tenantonként a `platform.trail` topicra küldik (az üzleti kérést nem lassítja). A reporting-projector írja a tenant MongoDB-jébe: `trail_step` (részletes lépések, 14 nap TTL) és `trail_stat_hour` (órás összesítő: darab, átlag/max idő, várakozás, e2e, hibák; 400 nap). A napi bontást a lekérdezés számolja (Europe/Budapest). Az API az audit szolgáltatásban van: `/api/t/{tenant}/audit/trail/operations`, `/operations/{traceId}`, `/stats?bucket=hour|day`. Kikapcsolható: `platform.trail.enabled=false`.
+
 ## Üzleti szolgáltatások
 
 ### Partner szolgáltatás
