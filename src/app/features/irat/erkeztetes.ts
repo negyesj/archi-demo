@@ -26,19 +26,17 @@ import { Kuldemeny } from './models';
     <h1>Érkeztetés</h1>
     <mat-card class="form-card">
       <mat-card-content class="form-col">
-        <mat-form-field><mat-label>Beérkezés dátuma</mat-label>
-          <input matInput [matDatepicker]="d1" [(ngModel)]="erkezes" required [max]="today" />
-          <mat-datepicker-toggle matIconSuffix [for]="d1" /><mat-datepicker #d1 /></mat-form-field>
+        <div class="form-item"><label class="form-label">Beérkezés dátuma</label><mat-form-field><input matInput [matDatepicker]="d1" [(ngModel)]="erkezes" required [max]="today" />
+          <mat-datepicker-toggle matIconSuffix [for]="d1" /><mat-datepicker #d1 /></mat-form-field></div>
         <app-partner-picker label="Küldő partner" [required]="true" [(value)]="partner" />
-        <mat-form-field><mat-label>Tárgy</mat-label><input matInput [(ngModel)]="targy" maxlength="500" /></mat-form-field>
+        <div class="form-item"><label class="form-label">Tárgy</label><mat-form-field><input matInput [(ngModel)]="targy" maxlength="500" /></mat-form-field></div>
         @if (canAll) {
           <mat-checkbox [(ngModel)]="egyben">Bontás és iktatás egy lépésben</mat-checkbox>
         }
         @if (egyben) {
-          <mat-form-field><mat-label>Bontás dátuma</mat-label>
-            <input matInput [matDatepicker]="d2" [(ngModel)]="bontas" required [min]="erkezes" />
-            <mat-datepicker-toggle matIconSuffix [for]="d2" /><mat-datepicker #d2 /></mat-form-field>
-          <mat-form-field><mat-label>Mellékletek száma</mat-label><input matInput type="number" min="0" [(ngModel)]="mellekletek" required /></mat-form-field>
+          <div class="form-item"><label class="form-label">Bontás dátuma</label><mat-form-field><input matInput [matDatepicker]="d2" [(ngModel)]="bontas" required [min]="erkezes" />
+            <mat-datepicker-toggle matIconSuffix [for]="d2" /><mat-datepicker #d2 /></mat-form-field></div>
+          <div class="form-item"><label class="form-label">Mellékletek száma</label><mat-form-field><input matInput type="number" min="0" [(ngModel)]="mellekletek" required /></mat-form-field></div>
           <app-user-picker label="Ügyintéző" [required]="true" [(value)]="ugyintezo" />
         }
       </mat-card-content>

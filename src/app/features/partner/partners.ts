@@ -27,15 +27,15 @@ export interface Partner {
     <h2 mat-dialog-title>{{ data ? 'Partner módosítása' : 'Új partner' }}</h2>
     <mat-dialog-content>
       <form [formGroup]="form" class="form-grid">
-        <mat-form-field class="span2"><mat-label>Név</mat-label><input matInput formControlName="name" /></mat-form-field>
-        <mat-form-field><mat-label>Adószám</mat-label><input matInput formControlName="taxNumber" /></mat-form-field>
-        <mat-form-field><mat-label>Cégjegyzékszám</mat-label><input matInput formControlName="registrationNumber" /></mat-form-field>
-        <mat-form-field><mat-label>Ország</mat-label><input matInput formControlName="country" maxlength="2" /></mat-form-field>
-        <mat-form-field><mat-label>Irányítószám</mat-label><input matInput formControlName="postalCode" /></mat-form-field>
-        <mat-form-field><mat-label>Település</mat-label><input matInput formControlName="city" /></mat-form-field>
-        <mat-form-field><mat-label>Cím</mat-label><input matInput formControlName="address" /></mat-form-field>
-        <mat-form-field><mat-label>E-mail</mat-label><input matInput formControlName="email" /></mat-form-field>
-        <mat-form-field><mat-label>Telefon</mat-label><input matInput formControlName="phone" /></mat-form-field>
+        <div class="form-item span2"><label class="form-label">Név</label><mat-form-field><input matInput formControlName="name" /></mat-form-field></div>
+        <div class="form-item"><label class="form-label">Adószám</label><mat-form-field><input matInput formControlName="taxNumber" /></mat-form-field></div>
+        <div class="form-item"><label class="form-label">Cégjegyzékszám</label><mat-form-field><input matInput formControlName="registrationNumber" /></mat-form-field></div>
+        <div class="form-item"><label class="form-label">Ország</label><mat-form-field><input matInput formControlName="country" maxlength="2" /></mat-form-field></div>
+        <div class="form-item"><label class="form-label">Irányítószám</label><mat-form-field><input matInput formControlName="postalCode" /></mat-form-field></div>
+        <div class="form-item"><label class="form-label">Település</label><mat-form-field><input matInput formControlName="city" /></mat-form-field></div>
+        <div class="form-item"><label class="form-label">Cím</label><mat-form-field><input matInput formControlName="address" /></mat-form-field></div>
+        <div class="form-item"><label class="form-label">E-mail</label><mat-form-field><input matInput formControlName="email" /></mat-form-field></div>
+        <div class="form-item"><label class="form-label">Telefon</label><mat-form-field><input matInput formControlName="phone" /></mat-form-field></div>
       </form>
     </mat-dialog-content>
     <mat-dialog-actions align="end">
@@ -79,7 +79,7 @@ export class PartnerDialog {
       @if (canWrite) { <button mat-flat-button (click)="edit(null)"><mat-icon>add_business</mat-icon> Új partner</button> }
     </div>
     <div class="filters">
-      <mat-form-field class="wide"><mat-label>Keresés (név, adószám, település)</mat-label><input matInput [(ngModel)]="q" (keyup.enter)="load(0)" /></mat-form-field>
+      <div class="form-item wide"><label class="form-label">Keresés (név, adószám, település)</label><mat-form-field><input matInput [(ngModel)]="q" (keyup.enter)="load(0)" /></mat-form-field></div>
       <button mat-stroked-button (click)="load(0)"><mat-icon>search</mat-icon> Keresés</button>
     </div>
     <table mat-table [dataSource]="rows()" class="full">

@@ -30,8 +30,8 @@ interface Delivery { id: string; subscriptionId: string; eventType: string; stat
     <mat-tab-group>
       <mat-tab label="API kliensek">
         <div class="filters">
-          <mat-form-field><mat-label>Megnevezés</mat-label><input matInput [(ngModel)]="clientName" /></mat-form-field>
-          <mat-form-field><mat-label>Kliens azonosító</mat-label><input matInput [(ngModel)]="clientId" placeholder="pl. erp-rendszer" /><mat-hint>api-&lt;azonosító&gt; néven jön létre</mat-hint></mat-form-field>
+          <div class="form-item"><label class="form-label">Megnevezés</label><mat-form-field><input matInput [(ngModel)]="clientName" /></mat-form-field></div>
+          <div class="form-item"><label class="form-label">Kliens azonosító</label><mat-form-field><input matInput [(ngModel)]="clientId" placeholder="pl. erp-rendszer" /><mat-hint>api-&lt;azonosító&gt; néven jön létre</mat-hint></mat-form-field></div>
           <button mat-flat-button [disabled]="!clientName || !clientId" (click)="createClient()"><mat-icon>add</mat-icon> Létrehozás</button>
         </div>
         <table mat-table [dataSource]="clients()" class="full">
@@ -52,9 +52,9 @@ interface Delivery { id: string; subscriptionId: string; eventType: string; stat
       </mat-tab>
       <mat-tab label="Webhookok">
         <div class="filters">
-          <mat-form-field><mat-label>Megnevezés</mat-label><input matInput [(ngModel)]="hookName" /></mat-form-field>
-          <mat-form-field class="wide"><mat-label>Cél URL (https)</mat-label><input matInput [(ngModel)]="hookUrl" /></mat-form-field>
-          <mat-form-field class="wide"><mat-label>Eseménytípusok (vesszővel)</mat-label><input matInput [(ngModel)]="hookTypes" placeholder="irat.kuldemeny.iktatas, partner.*" /></mat-form-field>
+          <div class="form-item"><label class="form-label">Megnevezés</label><mat-form-field><input matInput [(ngModel)]="hookName" /></mat-form-field></div>
+          <div class="form-item wide"><label class="form-label">Cél URL (https)</label><mat-form-field><input matInput [(ngModel)]="hookUrl" /></mat-form-field></div>
+          <div class="form-item wide"><label class="form-label">Eseménytípusok (vesszővel)</label><mat-form-field><input matInput [(ngModel)]="hookTypes" placeholder="irat.kuldemeny.iktatas, partner.*" /></mat-form-field></div>
           <button mat-flat-button [disabled]="!hookName || !hookUrl || !hookTypes" (click)="createHook()"><mat-icon>add</mat-icon> Feliratkozás</button>
         </div>
         <table mat-table [dataSource]="subs()" class="full">

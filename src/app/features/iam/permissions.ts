@@ -28,20 +28,18 @@ import { Grant, Group, Permission } from './models';
       @if (subjectType === 'USER') {
         <app-user-picker label="Felhasználó" [(value)]="user" />
       } @else {
-        <mat-form-field><mat-label>Csoport</mat-label>
-          <mat-select [(ngModel)]="groupId" (selectionChange)="loadGrants()">
+        <div class="form-item"><label class="form-label">Csoport</label><mat-form-field><mat-select [(ngModel)]="groupId" (selectionChange)="loadGrants()">
             @for (g of groups(); track g.id) { <mat-option [value]="g.id">{{ g.name }}</mat-option> }
           </mat-select>
-        </mat-form-field>
+        </mat-form-field></div>
       }
     </div>
     @if (subjectId()) {
       <div class="filters">
-        <mat-form-field class="wide"><mat-label>Jogosultsági elem hozzárendelése</mat-label>
-          <mat-select [(ngModel)]="toGrant">
+        <div class="form-item wide"><label class="form-label">Jogosultsági elem hozzárendelése</label><mat-form-field><mat-select [(ngModel)]="toGrant">
             @for (p of available(); track p.code) { <mat-option [value]="p.code">{{ p.name }} <small class="muted">({{ p.code }})</small></mat-option> }
           </mat-select>
-        </mat-form-field>
+        </mat-form-field></div>
         <button mat-flat-button [disabled]="!toGrant" (click)="grant()"><mat-icon>add</mat-icon> Hozzárendelés</button>
       </div>
       <table mat-table [dataSource]="grants()" class="full">

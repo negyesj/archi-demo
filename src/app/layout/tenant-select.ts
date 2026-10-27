@@ -9,6 +9,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { TenantInfo, TenantService } from '../core/tenant';
 import { ConfigService } from '../core/config';
+import { DmsLogo } from '../shared/dms-logo';
 
 /**
  * Kezdőlap: tenant választás. Nem listázza az ügyfeleket (az ügyfélnév-lista érzékeny adat): a felhasználó a tenant
@@ -16,21 +17,20 @@ import { ConfigService } from '../core/config';
  */
 @Component({
   selector: 'app-tenant-select',
-  imports: [FormsModule, RouterLink, MatCardModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatListModule, MatIconModule],
+  imports: [FormsModule, RouterLink, MatCardModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatListModule, MatIconModule, DmsLogo],
   template: `
     <div class="center-page">
       <mat-card class="narrow">
         <mat-card-header>
-          <mat-card-title>{{ config.value.appName }}</mat-card-title>
+          <mat-card-title class="login-logo"><app-dms-logo /> {{ config.value.appName }}</mat-card-title>
           <mat-card-subtitle>Adja meg a szervezete azonosítóját</mat-card-subtitle>
         </mat-card-header>
         <mat-card-content>
           <form (ngSubmit)="go()">
-            <mat-form-field class="full">
-              <mat-label>Tenant azonosító</mat-label>
+            <div class="form-item full"><label class="form-label">Tenant azonosító</label><mat-form-field>
               <input matInput name="code" [(ngModel)]="code" autocomplete="organization" required />
               @if (error()) { <mat-hint class="error-text">{{ error() }}</mat-hint> }
-            </mat-form-field>
+            </mat-form-field></div>
             <button mat-flat-button class="full" type="submit" [disabled]="busy()">Tovább a bejelentkezéshez</button>
           </form>
           @if (recent.length) {

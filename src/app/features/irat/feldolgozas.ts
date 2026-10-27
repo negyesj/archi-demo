@@ -21,10 +21,9 @@ import { ALLAPOT_NEV, Allapot, Kuldemeny } from './models';
   template: `
     <h2 mat-dialog-title>Bontás – {{ k.partnerNev }}</h2>
     <mat-dialog-content class="form-col">
-      <mat-form-field><mat-label>Bontás dátuma</mat-label>
-        <input matInput [matDatepicker]="d" [(ngModel)]="datum" required [min]="min" />
-        <mat-datepicker-toggle matIconSuffix [for]="d" /><mat-datepicker #d /></mat-form-field>
-      <mat-form-field><mat-label>Mellékletek száma</mat-label><input matInput type="number" min="0" [(ngModel)]="db" required /></mat-form-field>
+      <div class="form-item"><label class="form-label">Bontás dátuma</label><mat-form-field><input matInput [matDatepicker]="d" [(ngModel)]="datum" required [min]="min" />
+        <mat-datepicker-toggle matIconSuffix [for]="d" /><mat-datepicker #d /></mat-form-field></div>
+      <div class="form-item"><label class="form-label">Mellékletek száma</label><mat-form-field><input matInput type="number" min="0" [(ngModel)]="db" required /></mat-form-field></div>
     </mat-dialog-content>
     <mat-dialog-actions align="end">
       <button mat-button mat-dialog-close>Mégse</button>

@@ -9,12 +9,15 @@ export interface MenuItem {
 
 export interface MenuGroup {
   label: string;
+  /** Ikon a bal szélső főmenü-oszlopban (fav-item). */
+  icon: string;
   items: MenuItem[];
 }
 
 export const MENU: MenuGroup[] = [
   {
     label: 'Iratkezelés',
+    icon: 'stacked_email',
     items: [
       { path: 'irat/erkeztetes', label: 'Érkeztetés', icon: 'move_to_inbox', service: 'irat', permissions: ['irat.erkeztetes'] },
       { path: 'irat/feldolgozas', label: 'Bontás, iktatás', icon: 'inventory', service: 'irat', permissions: ['irat.read', 'irat.bontas', 'irat.iktatas'] },
@@ -23,10 +26,12 @@ export const MENU: MenuGroup[] = [
   },
   {
     label: 'Törzsadatok',
+    icon: 'format_list_bulleted',
     items: [{ path: 'partner', label: 'Partnerek', icon: 'business', service: 'partner', permissions: ['partner.read'] }],
   },
   {
     label: 'Adminisztráció',
+    icon: 'dns',
     items: [
       { path: 'iam/users', label: 'Felhasználók', icon: 'person', service: 'iam', permissions: ['iam.read'] },
       { path: 'iam/groups', label: 'Csoportok', icon: 'groups', service: 'iam', permissions: ['iam.read'] },

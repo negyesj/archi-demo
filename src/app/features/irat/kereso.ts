@@ -25,17 +25,16 @@ type Row = Record<string, unknown> & { _updatedAt?: string };
   template: `
     <h1>Iratkereső</h1>
     <div class="filters">
-      <mat-form-field><mat-label>Iktatószám</mat-label><input matInput [(ngModel)]="f.iktatoszam" (keyup.enter)="load(0)" /></mat-form-field>
-      <mat-form-field><mat-label>Állapot</mat-label>
-        <mat-select [(ngModel)]="f.allapot"><mat-option [value]="null">Mind</mat-option>
+      <div class="form-item"><label class="form-label">Iktatószám</label><mat-form-field><input matInput [(ngModel)]="f.iktatoszam" (keyup.enter)="load(0)" /></mat-form-field></div>
+      <div class="form-item"><label class="form-label">Állapot</label><mat-form-field><mat-select [(ngModel)]="f.allapot"><mat-option [value]="null">Mind</mat-option>
           @for (a of allapotok; track a) { <mat-option [value]="a">{{ nev[a] }}</mat-option> }
-        </mat-select></mat-form-field>
-      <mat-form-field><mat-label>Beérkezés ettől</mat-label><input matInput [matDatepicker]="d1" [(ngModel)]="f.tol" /><mat-datepicker-toggle matIconSuffix [for]="d1" /><mat-datepicker #d1 /></mat-form-field>
-      <mat-form-field><mat-label>Beérkezés eddig</mat-label><input matInput [matDatepicker]="d2" [(ngModel)]="f.ig" /><mat-datepicker-toggle matIconSuffix [for]="d2" /><mat-datepicker #d2 /></mat-form-field>
-      <mat-form-field><mat-label>Partner</mat-label><input matInput [(ngModel)]="f.partner" /></mat-form-field>
-      <mat-form-field><mat-label>Ügyintéző</mat-label><input matInput [(ngModel)]="f.ugyintezo" /></mat-form-field>
-      <mat-form-field><mat-label>Tárgy</mat-label><input matInput [(ngModel)]="f.targy" /></mat-form-field>
-      <mat-form-field><mat-label>Mellékletek száma</mat-label><input matInput type="number" [(ngModel)]="f.mellekletek" /></mat-form-field>
+        </mat-select></mat-form-field></div>
+      <div class="form-item"><label class="form-label">Beérkezés ettől</label><mat-form-field><input matInput [matDatepicker]="d1" [(ngModel)]="f.tol" /><mat-datepicker-toggle matIconSuffix [for]="d1" /><mat-datepicker #d1 /></mat-form-field></div>
+      <div class="form-item"><label class="form-label">Beérkezés eddig</label><mat-form-field><input matInput [matDatepicker]="d2" [(ngModel)]="f.ig" /><mat-datepicker-toggle matIconSuffix [for]="d2" /><mat-datepicker #d2 /></mat-form-field></div>
+      <div class="form-item"><label class="form-label">Partner</label><mat-form-field><input matInput [(ngModel)]="f.partner" /></mat-form-field></div>
+      <div class="form-item"><label class="form-label">Ügyintéző</label><mat-form-field><input matInput [(ngModel)]="f.ugyintezo" /></mat-form-field></div>
+      <div class="form-item"><label class="form-label">Tárgy</label><mat-form-field><input matInput [(ngModel)]="f.targy" /></mat-form-field></div>
+      <div class="form-item"><label class="form-label">Mellékletek száma</label><mat-form-field><input matInput type="number" [(ngModel)]="f.mellekletek" /></mat-form-field></div>
       <button mat-flat-button (click)="load(0)"><mat-icon>search</mat-icon> Keresés</button>
     </div>
     <table mat-table [dataSource]="rows()" class="full">

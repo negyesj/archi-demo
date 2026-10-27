@@ -22,14 +22,13 @@ import { MembersDialog } from './members';
     <h2 mat-dialog-title>{{ data.unit ? 'Szervezeti egység módosítása' : 'Új szervezeti egység' }}</h2>
     <mat-dialog-content>
       <form [formGroup]="form" class="form-col">
-        <mat-form-field><mat-label>Kód</mat-label><input matInput formControlName="code" /></mat-form-field>
-        <mat-form-field><mat-label>Név</mat-label><input matInput formControlName="name" /></mat-form-field>
-        <mat-form-field><mat-label>Szülő egység</mat-label>
-          <mat-select formControlName="parentId">
+        <div class="form-item"><label class="form-label">Kód</label><mat-form-field><input matInput formControlName="code" /></mat-form-field></div>
+        <div class="form-item"><label class="form-label">Név</label><mat-form-field><input matInput formControlName="name" /></mat-form-field></div>
+        <div class="form-item"><label class="form-label">Szülő egység</label><mat-form-field><mat-select formControlName="parentId">
             <mat-option [value]="null">– (legfelső szint)</mat-option>
             @for (o of parents; track o.id) { <mat-option [value]="o.id">{{ o.name }}</mat-option> }
           </mat-select>
-        </mat-form-field>
+        </mat-form-field></div>
       </form>
     </mat-dialog-content>
     <mat-dialog-actions align="end">

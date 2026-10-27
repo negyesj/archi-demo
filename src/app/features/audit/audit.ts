@@ -27,15 +27,14 @@ interface AuditEvent {
   template: `
     <h1>Audit napló</h1>
     <div class="filters">
-      <mat-form-field><mat-label>Időszak kezdete</mat-label><input matInput [matDatepicker]="dp1" [(ngModel)]="from" /><mat-datepicker-toggle matIconSuffix [for]="dp1" /><mat-datepicker #dp1 /></mat-form-field>
-      <mat-form-field><mat-label>Időszak vége</mat-label><input matInput [matDatepicker]="dp2" [(ngModel)]="to" /><mat-datepicker-toggle matIconSuffix [for]="dp2" /><mat-datepicker #dp2 /></mat-form-field>
-      <mat-form-field><mat-label>Szolgáltatás</mat-label>
-        <mat-select [(ngModel)]="service"><mat-option [value]="''">Mind</mat-option>
+      <div class="form-item"><label class="form-label">Időszak kezdete</label><mat-form-field><input matInput [matDatepicker]="dp1" [(ngModel)]="from" /><mat-datepicker-toggle matIconSuffix [for]="dp1" /><mat-datepicker #dp1 /></mat-form-field></div>
+      <div class="form-item"><label class="form-label">Időszak vége</label><mat-form-field><input matInput [matDatepicker]="dp2" [(ngModel)]="to" /><mat-datepicker-toggle matIconSuffix [for]="dp2" /><mat-datepicker #dp2 /></mat-form-field></div>
+      <div class="form-item"><label class="form-label">Szolgáltatás</label><mat-form-field><mat-select [(ngModel)]="service"><mat-option [value]="''">Mind</mat-option>
           @for (s of services; track s) { <mat-option [value]="s">{{ s }}</mat-option> }
-        </mat-select></mat-form-field>
-      <mat-form-field><mat-label>Végrehajtó</mat-label><input matInput [(ngModel)]="actor" /></mat-form-field>
-      <mat-form-field><mat-label>Művelet</mat-label><input matInput [(ngModel)]="action" placeholder="pl. IKTATAS" /></mat-form-field>
-      <mat-form-field><mat-label>Szabad szöveg / azonosító</mat-label><input matInput [(ngModel)]="q" (keyup.enter)="load(0)" /></mat-form-field>
+        </mat-select></mat-form-field></div>
+      <div class="form-item"><label class="form-label">Végrehajtó</label><mat-form-field><input matInput [(ngModel)]="actor" /></mat-form-field></div>
+      <div class="form-item"><label class="form-label">Művelet</label><mat-form-field><input matInput [(ngModel)]="action" placeholder="pl. IKTATAS" /></mat-form-field></div>
+      <div class="form-item"><label class="form-label">Szabad szöveg / azonosító</label><mat-form-field><input matInput [(ngModel)]="q" (keyup.enter)="load(0)" /></mat-form-field></div>
       <button mat-flat-button (click)="load(0)"><mat-icon>search</mat-icon> Keresés</button>
     </div>
     <p class="muted">{{ total() }} esemény</p>

@@ -25,9 +25,9 @@ import { Group, OrgUnit, Ref, User } from './models';
     <h2 mat-dialog-title>{{ data ? 'Felhasználó módosítása' : 'Új felhasználó' }}</h2>
     <mat-dialog-content>
       <form [formGroup]="form" class="form-col">
-        <mat-form-field><mat-label>Felhasználónév</mat-label><input matInput formControlName="username" /></mat-form-field>
-        <mat-form-field><mat-label>Teljes név</mat-label><input matInput formControlName="fullName" /></mat-form-field>
-        <mat-form-field><mat-label>E-mail</mat-label><input matInput formControlName="email" type="email" /></mat-form-field>
+        <div class="form-item"><label class="form-label">Felhasználónév</label><mat-form-field><input matInput formControlName="username" /></mat-form-field></div>
+        <div class="form-item"><label class="form-label">Teljes név</label><mat-form-field><input matInput formControlName="fullName" /></mat-form-field></div>
+        <div class="form-item"><label class="form-label">E-mail</label><mat-form-field><input matInput formControlName="email" type="email" /></mat-form-field></div>
         @if (data) { <mat-slide-toggle formControlName="active">Aktív</mat-slide-toggle> }
       </form>
     </mat-dialog-content>
@@ -85,11 +85,10 @@ export class UserDialog {
         } @empty { <span class="muted">Nincs csoporttagság</span> }
       </mat-chip-set>
       @if (canWrite) {
-        <mat-form-field class="full"><mat-label>Csoporthoz rendelés</mat-label>
-          <mat-select [(ngModel)]="groupToAdd" (selectionChange)="addGroup()">
+        <div class="form-item full"><label class="form-label">Csoporthoz rendelés</label><mat-form-field><mat-select [(ngModel)]="groupToAdd" (selectionChange)="addGroup()">
             @for (g of allGroups(); track g.id) { <mat-option [value]="g.id">{{ g.name }}</mat-option> }
           </mat-select>
-        </mat-form-field>
+        </mat-form-field></div>
       }
       <h4>Szervezeti egységek</h4>
       <mat-chip-set>
@@ -100,11 +99,10 @@ export class UserDialog {
         } @empty { <span class="muted">Nincs szervezeti egység</span> }
       </mat-chip-set>
       @if (canWrite) {
-        <mat-form-field class="full"><mat-label>Szervezeti egységhez rendelés</mat-label>
-          <mat-select [(ngModel)]="orgUnitToAdd" (selectionChange)="addOrgUnit()">
+        <div class="form-item full"><label class="form-label">Szervezeti egységhez rendelés</label><mat-form-field><mat-select [(ngModel)]="orgUnitToAdd" (selectionChange)="addOrgUnit()">
             @for (o of allOrgUnits(); track o.id) { <mat-option [value]="o.id">{{ o.name }} ({{ o.code }})</mat-option> }
           </mat-select>
-        </mat-form-field>
+        </mat-form-field></div>
       }
     </mat-dialog-content>
     <mat-dialog-actions align="end"><button mat-flat-button mat-dialog-close>Kész</button></mat-dialog-actions>
@@ -165,12 +163,11 @@ export class MembershipsDialog {
       @if (canWrite) { <button mat-flat-button (click)="edit(null)"><mat-icon>person_add</mat-icon> Új felhasználó</button> }
     </div>
     <div class="filters">
-      <mat-form-field><mat-label>Keresés</mat-label><input matInput [(ngModel)]="q" (keyup.enter)="load(0)" /></mat-form-field>
-      <mat-form-field><mat-label>Állapot</mat-label>
-        <mat-select [(ngModel)]="active" (selectionChange)="load(0)">
+      <div class="form-item"><label class="form-label">Keresés</label><mat-form-field><input matInput [(ngModel)]="q" (keyup.enter)="load(0)" /></mat-form-field></div>
+      <div class="form-item"><label class="form-label">Állapot</label><mat-form-field><mat-select [(ngModel)]="active" (selectionChange)="load(0)">
           <mat-option [value]="null">Mind</mat-option><mat-option [value]="true">Aktív</mat-option><mat-option [value]="false">Inaktív</mat-option>
         </mat-select>
-      </mat-form-field>
+      </mat-form-field></div>
       <button mat-stroked-button (click)="load(0)"><mat-icon>search</mat-icon> Keresés</button>
     </div>
     <table mat-table [dataSource]="rows()" class="full">

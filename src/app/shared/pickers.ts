@@ -29,8 +29,7 @@ export interface UserSummary {
   selector: 'app-partner-picker',
   imports: [FormsModule, MatAutocompleteModule, MatFormFieldModule, MatInputModule],
   template: `
-    <mat-form-field class="full">
-      <mat-label>{{ label() }}</mat-label>
+    <div class="form-item full"><label class="form-label">{{ label() }}</label><mat-form-field>
       <input matInput [ngModel]="text()" (ngModelChange)="onType($event)" [matAutocomplete]="auto"
              [required]="required()" placeholder="Név, adószám vagy település" />
       <mat-autocomplete #auto="matAutocomplete" [displayWith]="display" (optionSelected)="select($event.option.value)">
@@ -42,7 +41,7 @@ export interface UserSummary {
         }
       </mat-autocomplete>
       @if (value()) { <mat-hint>{{ value()!.address }}</mat-hint> }
-    </mat-form-field>
+    </mat-form-field></div>
   `,
 })
 export class PartnerPicker {
@@ -86,8 +85,7 @@ export class PartnerPicker {
   selector: 'app-user-picker',
   imports: [FormsModule, MatAutocompleteModule, MatFormFieldModule, MatInputModule],
   template: `
-    <mat-form-field class="full">
-      <mat-label>{{ label() }}</mat-label>
+    <div class="form-item full"><label class="form-label">{{ label() }}</label><mat-form-field>
       <input matInput [ngModel]="text()" (ngModelChange)="onType($event)" [matAutocomplete]="auto"
              [required]="required()" placeholder="Név vagy felhasználónév" />
       <mat-autocomplete #auto="matAutocomplete" [displayWith]="display" (optionSelected)="select($event.option.value)">
@@ -95,7 +93,7 @@ export class PartnerPicker {
           <mat-option [value]="u">{{ u.fullName }} <small class="muted">({{ u.username }})</small></mat-option>
         }
       </mat-autocomplete>
-    </mat-form-field>
+    </mat-form-field></div>
   `,
 })
 export class UserPicker {
