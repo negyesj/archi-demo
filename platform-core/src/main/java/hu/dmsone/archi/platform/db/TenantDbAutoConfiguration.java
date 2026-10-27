@@ -7,6 +7,7 @@ import hu.dmsone.archi.platform.PlatformProperties;
 import hu.dmsone.archi.platform.kafka.Topics;
 import hu.dmsone.archi.platform.outbox.ActorProvider;
 import hu.dmsone.archi.platform.outbox.OutboxWriter;
+import hu.dmsone.archi.platform.trail.TrailRecorder;
 import io.micrometer.tracing.Tracer;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
@@ -53,8 +54,9 @@ public class TenantDbAutoConfiguration {
     static class TenantRoutingConfiguration {
 
         @Bean
-        public TenantDataSources tenantDataSources(PlatformProperties props, SecretProvider secrets) {
-            return new TenantDataSources(props.getTenantDb(), secrets);
+        public TenantDataSources tenantDataSources(PlatformProperties props, SecretProvider secrets,
+                                                   ObjectProvider<TrailRecorder> trail) {
+            return new TenantDataSources(props.getTenantDb(), secrets, trail.getIfAvailable());
         }
 
         @Bean

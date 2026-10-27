@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import hu.dmsone.archi.platform.PlatformCoreAutoConfiguration;
 import hu.dmsone.archi.platform.outbox.ActorProvider;
 import hu.dmsone.archi.platform.tenant.TenantRegistry;
+import hu.dmsone.archi.platform.trail.TrailRecorder;
+import org.springframework.beans.factory.ObjectProvider;
 import hu.dmsone.archi.platform.web.client.ServiceClients;
 import hu.dmsone.archi.platform.web.error.PlatformExceptionHandler;
 import hu.dmsone.archi.platform.web.permission.PermissionAspect;
@@ -61,9 +63,10 @@ public class PlatformWebAutoConfiguration {
     @Bean
     public FilterRegistrationBean<TenantRequestFilter> tenantRequestFilter(
             TenantRegistry registry, ObjectMapper objectMapper, PlatformWebProperties props,
-            @Value("${platform.service-id:${spring.application.name}}") String serviceId) {
-        FilterRegistrationBean<TenantRequestFilter> reg =
-                new FilterRegistrationBean<>(new TenantRequestFilter(registry, objectMapper, serviceId, props.isCoreService()));
+            @Value("${platform.service-id:${spring.application.name}}") String serviceId,
+            ObjectProvider<TrailRecorder> trail) {
+        FilterRegistrationBean<TenantRequestFilter> reg = new FilterRegistrationBean<>(
+                new TenantRequestFilter(registry, objectMapper, serviceId, props.isCoreService(), trail.getIfAvailable()));
         reg.setOrder(SecurityProperties.DEFAULT_FILTER_ORDER + 10);
         reg.addUrlPatterns("/api/*", "/public/*");
         return reg;

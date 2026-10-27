@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import hu.dmsone.archi.platform.tenant.TenantContext;
 import hu.dmsone.archi.platform.tenant.TenantInfo;
 import hu.dmsone.archi.platform.tenant.TenantRegistry;
+import hu.dmsone.archi.platform.trail.TrailKind;
+import hu.dmsone.archi.platform.trail.TrailRecorder;
 import hu.dmsone.archi.platform.web.security.CurrentUser;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -11,6 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.MDC;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.servlet.HandlerMapping;
 
 import java.io.IOException;
 import java.util.LinkedHashMap;
@@ -31,12 +34,15 @@ public class TenantRequestFilter extends OncePerRequestFilter {
     private final ObjectMapper objectMapper;
     private final String serviceId;
     private final boolean coreService;
+    private final TrailRecorder trail;
 
-    public TenantRequestFilter(TenantRegistry registry, ObjectMapper objectMapper, String serviceId, boolean coreService) {
+    public TenantRequestFilter(TenantRegistry registry, ObjectMapper objectMapper, String serviceId, boolean coreService,
+                               TrailRecorder trail) {
         this.registry = registry;
         this.objectMapper = objectMapper;
         this.serviceId = serviceId;
         this.coreService = coreService;
+        this.trail = trail;
     }
 
     @Override
@@ -67,6 +73,8 @@ public class TenantRequestFilter extends OncePerRequestFilter {
             problem(response, 403, "Tenant eltérés", "A token másik tenanthoz tartozik.");
             return;
         }
+        TrailRecorder.Handle step = trail == null || !trail.enabled() ? null : trail.begin(tenant, traceId, parentSpan(request));
+        String error = null;
         try {
             TenantContext.set(tenant);
             if (CurrentUser.subject() != null) {
@@ -76,11 +84,34 @@ public class TenantRequestFilter extends OncePerRequestFilter {
                 MDC.put("clientId", CurrentUser.clientId());
             }
             chain.doFilter(request, response);
+        } catch (IOException | ServletException | RuntimeException e) {
+            error = TrailRecorder.errorText(e);
+            throw e;
         } finally {
+            if (step != null) {
+                int status = error != null ? 500 : response.getStatus();
+                String user = CurrentUser.isServiceAccount() ? CurrentUser.clientId() : CurrentUser.username();
+                trail.end(step, TrailRecorder.Spec.of(TrailKind.HTTP, operation(request), serviceId).withUser(user),
+                        status >= 500 ? "ERROR" : "OK", error != null ? error : "HTTP " + status);
+            }
             TenantContext.clear();
             MDC.remove("userId");
             MDC.remove("clientId");
         }
+    }
+
+    /** {@code POST /api/t/{tenant}/irat/kuldemenyek/{id}/iktatas}: a Spring MVC útvonalminta, ha ismert. */
+    private static String operation(HttpServletRequest request) {
+        Object pattern = request.getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE);
+        String path = pattern != null ? pattern.toString()
+                : request.getRequestURI().replaceAll("/[0-9a-fA-F-]{36}(?=/|$)", "/{id}").replaceAll("/t/[a-z0-9]+/", "/t/{tenant}/");
+        return request.getMethod() + " " + path;
+    }
+
+    /** A hívó span azonosítója a W3C traceparent fejlécből (a trail fában ehhez kapcsolódik a lépés). */
+    private static String parentSpan(HttpServletRequest request) {
+        String[] ids = TrailRecorder.traceparent(request.getHeader("traceparent"));
+        return ids == null ? null : ids[1];
     }
 
     private void problem(HttpServletResponse response, int status, String title, String detail) throws IOException {

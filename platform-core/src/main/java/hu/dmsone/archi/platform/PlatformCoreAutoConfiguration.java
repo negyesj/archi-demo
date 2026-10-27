@@ -7,6 +7,7 @@ import hu.dmsone.archi.platform.logging.LogLevelListener;
 import hu.dmsone.archi.platform.logging.TenantLogTurboFilter;
 import hu.dmsone.archi.platform.outbox.ActorProvider;
 import hu.dmsone.archi.platform.tenant.TenantRegistry;
+import hu.dmsone.archi.platform.trail.TrailRecorder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -65,6 +66,19 @@ public class PlatformCoreAutoConfiguration {
         DeadLetterPublishingRecoverer recoverer = new DeadLetterPublishingRecoverer(kafkaTemplate,
                 (rec, ex) -> new TopicPartition(rec.topic() + ".dlt", -1));
         return new DefaultErrorHandler(recoverer, new FixedBackOff(2000L, 5));
+    }
+
+    /**
+     * Műveleti trail: a lépések időmérése tenantonként (gateway, HTTP, SQL, Kafka, MongoDB, webhook).
+     * Kikapcsolható: {@code platform.trail.enabled=false}.
+     */
+    @Bean
+    @ConditionalOnMissingBean
+    public TrailRecorder trailRecorder(KafkaTemplate<String, String> kafkaTemplate, ObjectMapper objectMapper,
+                                       @Value("${spring.application.name:${platform.service-id:unknown}}") String service,
+                                       @Value("${platform.trail.flush-interval-ms:1000}") long flushIntervalMs,
+                                       @Value("${platform.trail.enabled:true}") boolean enabled) {
+        return new TrailRecorder(kafkaTemplate, objectMapper, service, flushIntervalMs, enabled);
     }
 
     @Bean

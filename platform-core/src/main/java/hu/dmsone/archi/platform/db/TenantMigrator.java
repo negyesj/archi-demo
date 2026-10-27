@@ -60,7 +60,7 @@ public class TenantMigrator {
             return;
         }
         try {
-            DataSource ds = dataSources.get(tenant.code());
+            DataSource ds = dataSources.raw(tenant.code());
             for (PlatformProperties.Migration m : migrations) {
                 Flyway.configure()
                         .dataSource(ds)

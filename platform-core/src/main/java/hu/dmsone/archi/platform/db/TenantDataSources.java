@@ -4,6 +4,8 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import hu.dmsone.archi.platform.PlatformProperties;
 import hu.dmsone.archi.platform.tenant.TenantNames;
+import hu.dmsone.archi.platform.trail.TrailJdbc;
+import hu.dmsone.archi.platform.trail.TrailRecorder;
 import org.springframework.beans.factory.DisposableBean;
 
 import javax.sql.DataSource;
@@ -17,19 +19,29 @@ import java.util.concurrent.ConcurrentHashMap;
 public class TenantDataSources implements DisposableBean {
 
     private final Map<String, HikariDataSource> pools = new ConcurrentHashMap<>();
+    private final Map<String, DataSource> measured = new ConcurrentHashMap<>();
     private final PlatformProperties.TenantDb props;
     private final SecretProvider secrets;
+    private final TrailRecorder trail;
 
-    public TenantDataSources(PlatformProperties.TenantDb props, SecretProvider secrets) {
+    public TenantDataSources(PlatformProperties.TenantDb props, SecretProvider secrets, TrailRecorder trail) {
         this.props = props;
         this.secrets = secrets;
+        this.trail = trail;
     }
 
+    /** A tenant adatbázisa; az SQL utasítások a műveleti trailbe is bekerülnek (ha van aktív trail kontextus). */
     public DataSource get(String tenant) {
+        return measured.computeIfAbsent(tenant, t -> TrailJdbc.wrap(raw(t), TenantNames.pgDatabase(t), trail));
+    }
+
+    /** A tenant pool mérés nélkül (migrációhoz). */
+    public DataSource raw(String tenant) {
         return pools.computeIfAbsent(tenant, this::create);
     }
 
     public void evict(String tenant) {
+        measured.remove(tenant);
         HikariDataSource ds = pools.remove(tenant);
         if (ds != null) {
             ds.close();
@@ -54,5 +66,6 @@ public class TenantDataSources implements DisposableBean {
     public void destroy() {
         pools.values().forEach(HikariDataSource::close);
         pools.clear();
+        measured.clear();
     }
 }

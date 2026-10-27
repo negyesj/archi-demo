@@ -14,6 +14,8 @@ public final class Topics {
     public static final String LOGLEVEL = "platform.loglevel";
     /** Tenant admin műveletek auditja. */
     public static final String PLATFORM_AUDIT = "platform.audit";
+    /** Műveleti trail lépések (időmérés), kulcs: tenant kód, érték: lépések JSON tömbje. */
+    public static final String TRAIL = "platform.trail";
     /** IAM CRUD események. */
     public static final String IAM_EVENTS = "iam.events";
     /** Az üzleti szolgáltatások eseménytopicjainak mintája. */
