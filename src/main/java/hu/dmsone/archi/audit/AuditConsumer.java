@@ -11,6 +11,7 @@ import hu.dmsone.archi.platform.kafka.Topics;
 import hu.dmsone.archi.platform.tenant.TenantContext;
 import hu.dmsone.archi.platform.tenant.TenantInfo;
 import hu.dmsone.archi.platform.tenant.TenantRegistry;
+import hu.dmsone.archi.platform.trail.TrailRecorder;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,8 +38,11 @@ public class AuditConsumer {
     private final JdbcClient jdbc;
     private final TenantRegistry registry;
     private final TenantMigrator migrator;
+    private final TrailRecorder trail;
 
-    public AuditConsumer(ObjectMapper objectMapper, JdbcClient jdbc, TenantRegistry registry, TenantMigrator migrator) {
+    public AuditConsumer(ObjectMapper objectMapper, JdbcClient jdbc, TenantRegistry registry, TenantMigrator migrator,
+                         TrailRecorder trail) {
+        this.trail = trail;
         this.objectMapper = objectMapper;
         this.jdbc = jdbc;
         this.registry = registry;
@@ -61,7 +65,11 @@ public class AuditConsumer {
             MDC.put("traceId", traceId);
         }
         try {
-            TenantContext.runAs(e.tenantId(), () -> insert(e, traceId));
+            // Trail: Kafka várakozás + audit írás ideje (az SQL lépés is rögzül), e2e = az üzleti művelettől az audit sorig
+            trail.consume(e, rec, () -> {
+                TenantContext.runAs(e.tenantId(), () -> insert(e, traceId));
+                return null;
+            });
         } finally {
             MDC.remove("traceId");
         }

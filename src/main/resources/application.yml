@@ -28,6 +28,9 @@ platform:
     migrations:
       - schema: audit
         location: classpath:db/tenant/audit
+  reporting:
+    host: ${MONGO_HOST:localhost}
+    port: ${MONGO_PORT:27017}
   web:
     core-service: true
     issuer-base: ${KEYCLOAK_PUBLIC_URL:http://localhost:8180}
