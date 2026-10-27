@@ -7,6 +7,9 @@ import hu.dmsone.archi.platform.kafka.Topics;
 import hu.dmsone.archi.platform.reporting.AclCriteria;
 import hu.dmsone.archi.platform.reporting.TenantMongoTemplates;
 import hu.dmsone.archi.platform.tenant.TenantContext;
+import hu.dmsone.archi.platform.tenant.TenantNames;
+import hu.dmsone.archi.platform.trail.TrailKind;
+import hu.dmsone.archi.platform.trail.TrailRecorder;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.bson.Document;
 import org.slf4j.Logger;
@@ -39,17 +42,25 @@ public class ReadModelProjector {
     private final ObjectMapper objectMapper;
     private final TenantMongoTemplates mongo;
     private final Set<String> indexed = ConcurrentHashMap.newKeySet();
+    private final TrailRecorder trail;
 
-    public ReadModelProjector(ObjectMapper objectMapper, TenantMongoTemplates mongo) {
+    public ReadModelProjector(ObjectMapper objectMapper, TenantMongoTemplates mongo, TrailRecorder trail) {
         this.objectMapper = objectMapper;
         this.mongo = mongo;
+        this.trail = trail;
     }
 
     @KafkaListener(topicPattern = Topics.DOMAIN_PATTERN, groupId = "reporting-projector",
             properties = {"auto.offset.reset=earliest", "metadata.max.age.ms=30000"})
     public void onEvent(ConsumerRecord<String, String> rec) throws Exception {
         EventEnvelope e = objectMapper.readValue(rec.value(), EventEnvelope.class);
-        TenantContext.runAs(e.tenantId(), () -> project(e));
+        // Trail: Kafka várakozás, a MongoDB írás ideje, e2e = mikor került ki a riport (NoSQL) adatbázisba
+        String coll = collection(e.service(), e.entity());
+        trail.consume(e, rec, () -> trail.step(TrailRecorder.Spec.of(TrailKind.MONGO, "upsert " + coll,
+                TenantNames.mongoDatabase(e.tenantId()) + "." + coll).withE2eFrom(e.occurredAt()), () -> {
+            TenantContext.runAs(e.tenantId(), () -> project(e));
+            return null;
+        }));
     }
 
     static String collection(String service, String entity) {

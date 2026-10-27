@@ -26,3 +26,7 @@ management:
   otlp:
     tracing:
       endpoint: ${OTLP_TRACES_ENDPOINT:http://localhost:4318/v1/traces}
+
+# Műveleti trail: a részletes lépések megőrzése (napokban); az órás összesítő 400 napig marad
+trail:
+  retention-days: ${TRAIL_RETENTION_DAYS:14}
