@@ -3,6 +3,10 @@ package hu.dmsone.archi.gateway;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hu.dmsone.archi.platform.tenant.TenantInfo;
 import hu.dmsone.archi.platform.tenant.TenantRegistry;
+import hu.dmsone.archi.platform.trail.TrailKind;
+import hu.dmsone.archi.platform.trail.TrailRecorder;
+import hu.dmsone.archi.platform.trail.TrailStep;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
@@ -15,9 +19,11 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -34,11 +40,14 @@ public class TenantGatewayFilter implements GlobalFilter, Ordered {
     private final TenantRegistry registry;
     private final GatewayProperties props;
     private final ObjectMapper objectMapper;
+    private final TrailRecorder trail;
 
-    public TenantGatewayFilter(TenantRegistry registry, GatewayProperties props, ObjectMapper objectMapper) {
+    public TenantGatewayFilter(TenantRegistry registry, GatewayProperties props, ObjectMapper objectMapper,
+                               ObjectProvider<TrailRecorder> trail) {
         this.registry = registry;
         this.props = props;
         this.objectMapper = objectMapper;
+        this.trail = trail.getIfAvailable();
     }
 
     @Override
@@ -60,6 +69,10 @@ public class TenantGatewayFilter implements GlobalFilter, Ordered {
         }
         String tenant = m.group(1);
         String service = m.group(2);
+        return traced(exchange, tenant, checkTenant(exchange, chain, tenant, service));
+    }
+
+    private Mono<Void> checkTenant(ServerWebExchange exchange, GatewayFilterChain chain, String tenant, String service) {
         Optional<TenantInfo> info = registry.findActive(tenant);
         if (info.isEmpty()) {
             return error(exchange, HttpStatus.NOT_FOUND, "Ismeretlen tenant", "A tenant nem létezik vagy nem aktív.");
@@ -71,6 +84,46 @@ public class TenantGatewayFilter implements GlobalFilter, Ordered {
         return realmOrEmpty(exchange).flatMap(realm -> realm.isEmpty() || realm.get().equals(tenant)
                 ? chain.filter(exchange)
                 : error(exchange, HttpStatus.FORBIDDEN, "Tenant eltérés", "A token másik tenanthoz tartozik."));
+    }
+
+    /**
+     * A művelet gyökérlépése a trailben: a gateway teljes válaszideje, a felhasználó és a státusz.
+     * A {@code traceId} ugyanaz, mint a szolgáltatásokban és az aszinkron (Kafka) lépésekben.
+     */
+    private Mono<Void> traced(ServerWebExchange exchange, String tenant, Mono<Void> inner) {
+        if (trail == null || !trail.enabled()) {
+            return inner;
+        }
+        Instant started = Instant.now();
+        long t0 = System.nanoTime();
+        String header = exchange.getResponse().getHeaders().getFirst("X-Trace-Id");
+        String traceId = header != null ? header : TrailRecorder.newId(16);
+        AtomicReference<String> user = new AtomicReference<>();
+        String operation = exchange.getRequest().getMethod().name() + " " + normalize(exchange.getRequest().getPath().value());
+        return exchange.getPrincipal()
+                .filter(JwtAuthenticationToken.class::isInstance)
+                .cast(JwtAuthenticationToken.class)
+                .doOnNext(t -> user.set(userOf(t)))
+                .then(inner)
+                .doFinally(signal -> {
+                    var code = exchange.getResponse().getStatusCode();
+                    int status = code == null ? 200 : code.value();
+                    trail.record(new TrailStep(tenant, traceId, TrailRecorder.newId(8), null, trail.service(),
+                            TrailKind.GATEWAY, operation, props.mode(), started, (System.nanoTime() - t0) / 1_000_000,
+                            null, null, status >= 500 ? "ERROR" : "OK", "HTTP " + status, true, user.get()));
+                });
+    }
+
+    private static String userOf(JwtAuthenticationToken t) {
+        String u = t.getToken().getClaimAsString("preferred_username");
+        return u != null ? u : t.getToken().getClaimAsString("azp");
+    }
+
+    /** {@code /api/t/acme/irat/kuldemenyek/<uuid>/iktatas} → {@code /api/t/{tenant}/irat/kuldemenyek/{id}/iktatas}. */
+    static String normalize(String path) {
+        return path.replaceFirst("^/(api|v1)/t/[a-z][a-z0-9]{1,29}/", "/$1/t/{tenant}/")
+                .replaceAll("/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}(?=/|$)", "/{id}")
+                .replaceAll("/[0-9]+(?=/|$)", "/{n}");
     }
 
     /** A token realmje; token nélkül üres Optional (a Mono mindig pontosan egy elemet ad). */
