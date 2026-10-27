@@ -39,6 +39,7 @@ export const MENU: MenuGroup[] = [
       { path: 'iam/permissions', label: 'Jogosultságok', icon: 'admin_panel_settings', service: 'iam', permissions: ['iam.permission.manage'] },
       { path: 'iam/integrations', label: 'Integrációk', icon: 'hub', service: 'iam', permissions: ['integration.manage'] },
       { path: 'audit', label: 'Audit napló', icon: 'history', service: 'audit', permissions: ['audit.read'] },
+      { path: 'trail', label: 'Műveleti trail', icon: 'timeline', service: 'audit', permissions: ['trail.read'] },
     ],
   },
 ];

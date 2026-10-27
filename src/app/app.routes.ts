@@ -30,6 +30,8 @@ export const routes: Routes = [
         loadComponent: () => import('./features/iam/integrations').then((m) => m.Integrations) },
       { path: 'audit', canActivate: [permissionGuard], data: { service: 'audit', permissions: ['audit.read'] },
         loadComponent: () => import('./features/audit/audit').then((m) => m.Audit) },
+      { path: 'trail', canActivate: [permissionGuard], data: { service: 'audit', permissions: ['trail.read'] },
+        loadComponent: () => import('./features/trail/trail').then((m) => m.Trail) },
       { path: 'partner', canActivate: [permissionGuard], data: { service: 'partner', permissions: ['partner.read'] },
         loadComponent: () => import('./features/partner/partners').then((m) => m.Partners) },
       { path: 'irat/erkeztetes', canActivate: [permissionGuard], data: { service: 'irat', permissions: ['irat.erkeztetes'] },
