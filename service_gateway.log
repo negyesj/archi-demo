@@ -1,7 +1,7 @@
 branch: service/gateway
-commit: 9e141ebc50bc6040d13a86c540951fbf40821c94
-status: failure
-run: https://github.com/negyesj/archi-demo/actions/runs/40471827739
+commit: 6481c338c2552cf43cdc957ec32766ade921d47a
+status: success
+run: https://github.com/negyesj/archi-demo/actions/runs/40472335049
 ----
 [INFO] Scanning for projects...
 [INFO] Loaded 24259 auto-discovered prefixes for remote repository central (prefixes-central.txt)
@@ -122,16 +122,16 @@ run: https://github.com/negyesj/archi-demo/actions/runs/40471827739
 [INFO] ------------------------------------------------------------------------
 [INFO] Reactor Summary for Platform shared libraries (aggregator) 0.1.0-SNAPSHOT:
 [INFO] 
-[INFO] Platform parent POM ................................ SUCCESS [  0.745 s]
-[INFO] platform-core ...................................... SUCCESS [  4.801 s]
-[INFO] platform-web ....................................... SUCCESS [  0.994 s]
-[INFO] platform-reporting ................................. SUCCESS [  0.433 s]
-[INFO] Platform shared libraries (aggregator) ............. SUCCESS [  0.077 s]
+[INFO] Platform parent POM ................................ SUCCESS [  0.752 s]
+[INFO] platform-core ...................................... SUCCESS [  5.289 s]
+[INFO] platform-web ....................................... SUCCESS [  1.125 s]
+[INFO] platform-reporting ................................. SUCCESS [  0.452 s]
+[INFO] Platform shared libraries (aggregator) ............. SUCCESS [  0.065 s]
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time:  9.198 s
-[INFO] Finished at: 2026-10-27T08:12:06Z
+[INFO] Total time:  9.769 s
+[INFO] Finished at: 2026-10-27T08:16:32Z
 [INFO] ------------------------------------------------------------------------
 [INFO] Scanning for projects...
 [INFO] Loaded 24259 auto-discovered prefixes for remote repository central (prefixes-central.txt)
@@ -149,33 +149,66 @@ run: https://github.com/negyesj/archi-demo/actions/runs/40471827739
 [INFO] --- compiler:3.14.0:compile (default-compile) @ service-gateway ---
 [INFO] Recompiling the module because of changed source code.
 [INFO] Compiling 8 source files with javac [debug parameters release 21] to target/classes
-[INFO] Some messages have been simplified; recompile with -Xdiags:verbose to get full output
-[INFO] -------------------------------------------------------------
-[ERROR] COMPILATION ERROR : 
-[INFO] -------------------------------------------------------------
-[ERROR] /home/runner/work/archi-demo/archi-demo/service-gateway/src/main/java/hu/dmsone/archi/gateway/TenantGatewayFilter.java:[128,22] incompatible types: invalid method reference
-    method getSpan in class io.micrometer.tracing.handler.TracingObservationHandler.TracingContext cannot be applied to given types
-      required: no arguments
-      found:    java.lang.Object
-      reason: actual and formal argument lists differ in length
-[INFO] 1 error
-[INFO] -------------------------------------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ service-gateway ---
+[INFO] skip non existing resourceDirectory /home/runner/work/archi-demo/archi-demo/service-gateway/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ service-gateway ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.4:test (default-test) @ service-gateway ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ service-gateway ---
+[INFO] Building jar: /home/runner/work/archi-demo/archi-demo/service-gateway/target/service-gateway-0.1.0-SNAPSHOT.jar
+[INFO] 
+[INFO] --- spring-boot:3.5.6:repackage (repackage) @ service-gateway ---
+[INFO] Loaded 50 auto-discovered prefixes for remote repository ow2-snapshot (prefixes-ow2-snapshot.txt)
+[INFO] Replacing main artifact /home/runner/work/archi-demo/archi-demo/service-gateway/target/service-gateway-0.1.0-SNAPSHOT.jar with repackaged archive, adding nested dependencies in BOOT-INF/.
+[INFO] The original artifact has been renamed to /home/runner/work/archi-demo/archi-demo/service-gateway/target/service-gateway-0.1.0-SNAPSHOT.jar.original
 [INFO] ------------------------------------------------------------------------
-[ERROR] BUILD FAILURE
+[INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time:  5.046 s
-[INFO] Finished at: 2026-10-27T08:12:13Z
+[INFO] Total time:  7.619 s
+[INFO] Finished at: 2026-10-27T08:16:42Z
 [INFO] ------------------------------------------------------------------------
-[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.14.0:compile (default-compile) on project service-gateway: Compilation failure
-[ERROR] /home/runner/work/archi-demo/archi-demo/service-gateway/src/main/java/hu/dmsone/archi/gateway/TenantGatewayFilter.java:[128,22] incompatible types: invalid method reference
-[ERROR]     method getSpan in class io.micrometer.tracing.handler.TracingObservationHandler.TracingContext cannot be applied to given types
-[ERROR]       required: no arguments
-[ERROR]       found:    java.lang.Object
-[ERROR]       reason: actual and formal argument lists differ in length
-[ERROR] -> [Help 1]
-[ERROR] 
-[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
-[ERROR] Re-run Maven using the -X switch to enable full debug logging.
-[ERROR] 
-[ERROR] For more information about the errors and possible solutions, please read the following articles:
-[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
+#13 0.286 useradd warning: app's uid 10001 is greater than SYS_UID_MAX 999
+#13 DONE 0.3s
+
+#14 [stage-1 3/4] WORKDIR /app
+#14 DONE 0.0s
+
+#10 [build 1/6] FROM docker.io/library/maven:3.9-eclipse-temurin-21@sha256:99e61abcff91a9b1333463bd8451fb18495d6eba9250ac66a338b518f8278320
+#10 extracting sha256:bd0bb49686d38ffc090c15f30d472cdb0354fb8cf46c03f21f4f2764d4e4efcd 1.6s done
+#10 extracting sha256:1bf7f7b7d02f74fa2a38d4325c84dcaf0e91faae8e30f221d86c841b0c4f6647
+#10 extracting sha256:1bf7f7b7d02f74fa2a38d4325c84dcaf0e91faae8e30f221d86c841b0c4f6647 0.1s done
+#10 extracting sha256:a466b9e11010eac13b4d1ac50894b683c5fbc95be50dc4dedcdec9c979f98f96
+#10 extracting sha256:a466b9e11010eac13b4d1ac50894b683c5fbc95be50dc4dedcdec9c979f98f96 done
+#10 extracting sha256:405aa165b3ac61a5d93c2398a95cdd881401cceda86849dde23f6293310b70c0 done
+#10 DONE 11.5s
+
+#15 [build 2/6] WORKDIR /src
+#15 DONE 0.0s
+
+#16 [build 3/6] COPY platform-libs/ platform-libs/
+#16 DONE 0.1s
+
+#17 [build 4/6] RUN --mount=type=cache,target=/root/.m2,sharing=locked mvn -B -ntp -q -f platform-libs/pom.xml install -DskipTests
+#17 DONE 22.6s
+
+#18 [build 5/6] COPY service-gateway/ svc/
+#18 DONE 0.3s
+
+#19 [build 6/6] RUN --mount=type=cache,target=/root/.m2,sharing=locked mvn -B -ntp -q -f svc/pom.xml package -DskipTests     && cp svc/target/*.jar /app.jar
+#19 DONE 11.9s
+
+#20 [stage-1 4/4] COPY --from=build /app.jar /app/app.jar
+#20 DONE 0.2s
+
+#21 exporting to image
+#21 exporting layers
+#21 exporting layers 0.9s done
+#21 writing image sha256:23364168fb643cdbb405817a4582f0a9351f2540e705206313e8986227df9f4d
+#21 writing image sha256:23364168fb643cdbb405817a4582f0a9351f2540e705206313e8986227df9f4d done
+#21 naming to docker.io/library/service-gateway:ci done
+#21 DONE 0.9s
