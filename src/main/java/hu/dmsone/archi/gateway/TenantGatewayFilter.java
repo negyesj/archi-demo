@@ -6,7 +6,9 @@ import hu.dmsone.archi.platform.tenant.TenantRegistry;
 import hu.dmsone.archi.platform.trail.TrailKind;
 import hu.dmsone.archi.platform.trail.TrailRecorder;
 import hu.dmsone.archi.platform.trail.TrailStep;
+import io.micrometer.tracing.handler.TracingObservationHandler;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.http.server.reactive.observation.ServerRequestObservationContext;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
@@ -96,8 +98,6 @@ public class TenantGatewayFilter implements GlobalFilter, Ordered {
         }
         Instant started = Instant.now();
         long t0 = System.nanoTime();
-        String header = exchange.getResponse().getHeaders().getFirst("X-Trace-Id");
-        String traceId = header != null ? header : TrailRecorder.newId(16);
         AtomicReference<String> user = new AtomicReference<>();
         String operation = exchange.getRequest().getMethod().name() + " " + normalize(exchange.getRequest().getPath().value());
         return exchange.getPrincipal()
@@ -108,10 +108,28 @@ public class TenantGatewayFilter implements GlobalFilter, Ordered {
                 .doFinally(signal -> {
                     var code = exchange.getResponse().getStatusCode();
                     int status = code == null ? 200 : code.value();
-                    trail.record(new TrailStep(tenant, traceId, TrailRecorder.newId(8), null, trail.service(),
+                    String traceId = traceIdOf(exchange);
+                    trail.record(new TrailStep(tenant, traceId != null ? traceId : TrailRecorder.newId(16),
+                            TrailRecorder.newId(8), null, trail.service(),
                             TrailKind.GATEWAY, operation, props.mode(), started, (System.nanoTime() - t0) / 1_000_000,
                             null, null, status >= 500 ? "ERROR" : "OK", "HTTP " + status, true, user.get()));
                 });
+    }
+
+    /**
+     * A kérés trace azonosítója: a szerver oldali megfigyelés (observation) spanjából, amelynek a gyermekeként
+     * a gateway a {@code traceparent} fejlécet a szolgáltatásoknak továbbítja. Reaktív láncban a
+     * {@code Tracer.currentSpan()} nem megbízható (nincs ThreadLocal), ezért nem azt használjuk.
+     * Végső tartalék: a szolgáltatás válaszának {@code X-Trace-Id} fejléce.
+     */
+    static String traceIdOf(ServerWebExchange exchange) {
+        String fromObservation = ServerRequestObservationContext.findCurrent(exchange.getAttributes())
+                .map(c -> c.get(TracingObservationHandler.TracingContext.class))
+                .map(TracingObservationHandler.TracingContext::getSpan)
+                .map(s -> s.context().traceId())
+                .filter(id -> !id.isBlank())
+                .orElse(null);
+        return fromObservation != null ? fromObservation : exchange.getResponse().getHeaders().getFirst("X-Trace-Id");
     }
 
     private static String userOf(JwtAuthenticationToken t) {
@@ -147,7 +165,7 @@ public class TenantGatewayFilter implements GlobalFilter, Ordered {
         body.put("title", title);
         body.put("status", status.value());
         body.put("detail", detail);
-        body.put("traceId", exchange.getResponse().getHeaders().getFirst("X-Trace-Id"));
+        body.put("traceId", traceIdOf(exchange));
         byte[] bytes;
         try {
             bytes = objectMapper.writeValueAsBytes(body);
