@@ -124,8 +124,8 @@ public class TenantGatewayFilter implements GlobalFilter, Ordered {
      */
     static String traceIdOf(ServerWebExchange exchange) {
         String fromObservation = ServerRequestObservationContext.findCurrent(exchange.getAttributes())
-                .map(c -> c.get(TracingObservationHandler.TracingContext.class))
-                .map(TracingObservationHandler.TracingContext::getSpan)
+                .map(c -> (TracingObservationHandler.TracingContext) c.get(TracingObservationHandler.TracingContext.class))
+                .map(tc -> tc.getSpan())
                 .map(s -> s.context().traceId())
                 .filter(id -> !id.isBlank())
                 .orElse(null);
