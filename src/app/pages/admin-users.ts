@@ -20,11 +20,10 @@ import { SecretDialog } from '../shared/confirm';
     <h1>Admin felhasználók</h1>
     @if (api.isAdmin()) {
       <div class="filters">
-        <mat-form-field><mat-label>Felhasználónév</mat-label><input matInput [(ngModel)]="n.username" /></mat-form-field>
-        <mat-form-field><mat-label>Név</mat-label><input matInput [(ngModel)]="n.fullName" /></mat-form-field>
-        <mat-form-field><mat-label>E-mail</mat-label><input matInput [(ngModel)]="n.email" /></mat-form-field>
-        <mat-form-field><mat-label>Szerepkör</mat-label>
-          <mat-select [(ngModel)]="n.role"><mat-option value="PLATFORM_ADMIN">Platform admin</mat-option><mat-option value="SUPPORT">Support</mat-option></mat-select></mat-form-field>
+        <div class="form-item"><label class="form-label">Felhasználónév</label><mat-form-field><input matInput [(ngModel)]="n.username" /></mat-form-field></div>
+        <div class="form-item"><label class="form-label">Név</label><mat-form-field><input matInput [(ngModel)]="n.fullName" /></mat-form-field></div>
+        <div class="form-item"><label class="form-label">E-mail</label><mat-form-field><input matInput [(ngModel)]="n.email" /></mat-form-field></div>
+        <div class="form-item"><label class="form-label">Szerepkör</label><mat-form-field><mat-select [(ngModel)]="n.role"><mat-option value="PLATFORM_ADMIN">Platform admin</mat-option><mat-option value="SUPPORT">Support</mat-option></mat-select></mat-form-field></div>
         <button mat-flat-button [disabled]="!n.username || !n.fullName || !n.email" (click)="create()"><mat-icon>person_add</mat-icon> Létrehozás</button>
       </div>
     }

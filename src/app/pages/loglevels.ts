@@ -22,15 +22,13 @@ interface Setting { key: string; service: string; logger: string; level: string;
   template: `
     <h1>Naplózási szintek</h1>
     <div class="filters">
-      <mat-form-field><mat-label>Szolgáltatás</mat-label>
-        <mat-select [(ngModel)]="f.service">
+      <div class="form-item"><label class="form-label">Szolgáltatás</label><mat-form-field><mat-select [(ngModel)]="f.service">
           @for (s of services; track s) { <mat-option [value]="s">{{ s }}</mat-option> }
-        </mat-select></mat-form-field>
-      <mat-form-field class="wide"><mat-label>Logger (csomag, üres = ROOT)</mat-label><input matInput [(ngModel)]="f.logger" placeholder="hu.dmsone.archi" /></mat-form-field>
-      <mat-form-field><mat-label>Szint</mat-label>
-        <mat-select [(ngModel)]="f.level">@for (l of levels; track l) { <mat-option [value]="l">{{ l }}</mat-option> }</mat-select></mat-form-field>
-      <mat-form-field><mat-label>Csak ez a tenant</mat-label><input matInput [(ngModel)]="f.tenant" /></mat-form-field>
-      <mat-form-field><mat-label>Lejárat (perc)</mat-label><input matInput type="number" min="1" max="1440" [(ngModel)]="f.minutes" /></mat-form-field>
+        </mat-select></mat-form-field></div>
+      <div class="form-item wide"><label class="form-label">Logger (csomag, üres = ROOT)</label><mat-form-field><input matInput [(ngModel)]="f.logger" placeholder="hu.dmsone.archi" /></mat-form-field></div>
+      <div class="form-item"><label class="form-label">Szint</label><mat-form-field><mat-select [(ngModel)]="f.level">@for (l of levels; track l) { <mat-option [value]="l">{{ l }}</mat-option> }</mat-select></mat-form-field></div>
+      <div class="form-item"><label class="form-label">Csak ez a tenant</label><mat-form-field><input matInput [(ngModel)]="f.tenant" /></mat-form-field></div>
+      <div class="form-item"><label class="form-label">Lejárat (perc)</label><mat-form-field><input matInput type="number" min="1" max="1440" [(ngModel)]="f.minutes" /></mat-form-field></div>
       <button mat-flat-button [disabled]="!f.service || !f.level" (click)="set()"><mat-icon>tune</mat-icon> Beállítás</button>
     </div>
     <table mat-table [dataSource]="rows()" class="full">

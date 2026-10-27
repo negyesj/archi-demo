@@ -20,8 +20,8 @@ import { CatalogEntry, STATUS_NEV, Tenant, TenantStatus } from './models';
     <h2 mat-dialog-title>Új tenant</h2>
     <mat-dialog-content>
       <form [formGroup]="form" class="form-col">
-        <mat-form-field><mat-label>Kód (URL-ben: /t/kód)</mat-label><input matInput formControlName="code" /><mat-hint>kisbetű és szám, 2–30 karakter</mat-hint></mat-form-field>
-        <mat-form-field><mat-label>Név</mat-label><input matInput formControlName="name" /></mat-form-field>
+        <div class="form-item"><label class="form-label">Kód (URL-ben: /t/kód)</label><mat-form-field><input matInput formControlName="code" /><mat-hint>kisbetű és szám, 2–30 karakter</mat-hint></mat-form-field></div>
+        <div class="form-item"><label class="form-label">Név</label><mat-form-field><input matInput formControlName="name" /></mat-form-field></div>
         <h4>Szolgáltatások</h4>
         @for (s of catalog(); track s.id) {
           @if (!s.core) {
@@ -31,9 +31,9 @@ import { CatalogEntry, STATUS_NEV, Tenant, TenantStatus } from './models';
           }
         }
         <h4>Első ügyfél-adminisztrátor</h4>
-        <mat-form-field><mat-label>Felhasználónév</mat-label><input matInput formControlName="adminUsername" /></mat-form-field>
-        <mat-form-field><mat-label>Név</mat-label><input matInput formControlName="adminName" /></mat-form-field>
-        <mat-form-field><mat-label>E-mail</mat-label><input matInput formControlName="adminEmail" /></mat-form-field>
+        <div class="form-item"><label class="form-label">Felhasználónév</label><mat-form-field><input matInput formControlName="adminUsername" /></mat-form-field></div>
+        <div class="form-item"><label class="form-label">Név</label><mat-form-field><input matInput formControlName="adminName" /></mat-form-field></div>
+        <div class="form-item"><label class="form-label">E-mail</label><mat-form-field><input matInput formControlName="adminEmail" /></mat-form-field></div>
       </form>
     </mat-dialog-content>
     <mat-dialog-actions align="end">

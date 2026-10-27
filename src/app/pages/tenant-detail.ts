@@ -57,9 +57,9 @@ import { CatalogEntry, STATUS_NEV, Tenant } from './models';
       <mat-card class="form-card">
         <mat-card-header><mat-card-title>Beállítások</mat-card-title></mat-card-header>
         <mat-card-content class="form-col">
-          <mat-form-field><mat-label>Név</mat-label><input matInput [(ngModel)]="name" [disabled]="!api.isAdmin()" /></mat-form-field>
-          <mat-form-field><mat-label>Iktatókönyv (iktatoszam.konyv)</mat-label><input matInput [(ngModel)]="konyv" [disabled]="!api.isAdmin()" /></mat-form-field>
-          <mat-form-field><mat-label>Iktatószám minta (iktatoszam.minta)</mat-label><input matInput [(ngModel)]="minta" [disabled]="!api.isAdmin()" /><mat-hint>{{ '{konyv}' }}, {{ '{ev}' }}, {{ '{sorszam}' }}</mat-hint></mat-form-field>
+          <div class="form-item"><label class="form-label">Név</label><mat-form-field><input matInput [(ngModel)]="name" [disabled]="!api.isAdmin()" /></mat-form-field></div>
+          <div class="form-item"><label class="form-label">Iktatókönyv (iktatoszam.konyv)</label><mat-form-field><input matInput [(ngModel)]="konyv" [disabled]="!api.isAdmin()" /></mat-form-field></div>
+          <div class="form-item"><label class="form-label">Iktatószám minta (iktatoszam.minta)</label><mat-form-field><input matInput [(ngModel)]="minta" [disabled]="!api.isAdmin()" /><mat-hint>{{ '{konyv}' }}, {{ '{ev}' }}, {{ '{sorszam}' }}</mat-hint></mat-form-field></div>
         </mat-card-content>
         @if (api.isAdmin()) {
           <mat-card-actions><button mat-flat-button (click)="saveSettings()">Mentés</button></mat-card-actions>

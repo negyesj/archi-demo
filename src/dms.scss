@@ -1,0 +1,391 @@
+// DMS One (K4 / 2024) arculat az Angular Material komponensekre és a K4 elrendezésre.
+// Forrás: a DMS One prototípus-generátor css_reference.md értékei (K2 closure-scss/2024).
+// Ugyanez a fájl van a frontend-app és a frontend-admin branchen is; változtatáskor mindkettőt frissítsd.
+@use '@angular/material' as mat;
+
+$text: #424242;
+$background: #ebebeb;
+$form: #ffffff;
+$window-bg: #f7f7f7;
+$window-title: #fcfcfc;
+$main: #118dff;
+$main-hover: #1580e3;
+$disabled: #c4c4c4;
+$error: #ed342f;
+$warning: #fac600;
+$success: #51a351;
+$input-border: #c4c4c4;
+$outline-btn: #646464;
+$item-hover: rgba(210, 233, 248, 0.3);
+$item-selected: rgba(210, 233, 248, 0.5);
+$grid-separator: #e1e1e1;
+$card-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+$font: 'Inter', InterVariable, Arial, sans-serif;
+
+html {
+  height: 100%;
+  @include mat.theme((
+    color: (primary: mat.$azure-palette, tertiary: mat.$blue-palette),
+    typography: (plain-family: $font, brand-family: $font),
+    density: -2,
+  ));
+
+  // M3 rendszerszínek a DMS One palettára
+  --mat-sys-primary: #{$main};
+  --mat-sys-on-primary: #fff;
+  --mat-sys-primary-container: #eaf3ff;
+  --mat-sys-on-primary-container: #{$main};
+  --mat-sys-secondary-container: #eaf3ff;
+  --mat-sys-on-secondary-container: #{$main};
+  --mat-sys-surface: #{$form};
+  --mat-sys-surface-container-lowest: #fff;
+  --mat-sys-surface-container-low: #fff;
+  --mat-sys-surface-container: #fff;
+  --mat-sys-surface-container-high: #fff;
+  --mat-sys-surface-container-highest: #f5f5f5;
+  --mat-sys-on-surface: #{$text};
+  --mat-sys-on-surface-variant: #757575;
+  --mat-sys-outline: #{$input-border};
+  --mat-sys-outline-variant: #{$grid-separator};
+  --mat-sys-error: #{$error};
+
+  @include mat.button-overrides((
+    filled-container-color: $main,
+    filled-label-text-color: #fff,
+    filled-container-shape: 4px,
+    filled-container-height: 28px,
+    filled-horizontal-padding: 20px,
+    filled-label-text-size: 13px,
+    filled-label-text-weight: 400,
+    filled-label-text-tracking: normal,
+    outlined-outline-color: $outline-btn,
+    outlined-label-text-color: $text,
+    outlined-container-shape: 4px,
+    outlined-container-height: 28px,
+    outlined-horizontal-padding: 16px,
+    outlined-label-text-size: 13px,
+    outlined-label-text-weight: 400,
+    outlined-label-text-tracking: normal,
+    text-label-text-color: $text,
+    text-container-shape: 14px,
+    text-container-height: 28px,
+    text-horizontal-padding: 10px,
+    text-label-text-size: 13px,
+    text-label-text-weight: 400,
+    text-label-text-tracking: normal,
+    text-state-layer-color: #000,
+  ));
+  @include mat.icon-button-overrides((state-layer-size: 32px, icon-size: 20px));
+  @include mat.form-field-overrides((
+    container-height: 28px,
+    container-vertical-padding: 4px,
+    container-text-size: 12px,
+    container-text-line-height: 18px,
+    container-text-tracking: normal,
+    outlined-outline-color: $input-border,
+    outlined-hover-outline-color: #9e9e9e,
+    outlined-focus-outline-color: $main,
+    outlined-focus-outline-width: 1px,
+    outlined-container-shape: 3px,
+    outlined-input-text-color: $text,
+    subscript-text-size: 11px,
+  ));
+  @include mat.select-overrides((trigger-text-size: 12px, trigger-text-tracking: normal));
+  @include mat.option-overrides((label-text-size: 13px, label-text-tracking: normal));
+  @include mat.table-overrides((
+    background-color: #fff,
+    header-container-height: 40px,
+    header-headline-color: $text,
+    header-headline-size: 13px,
+    header-headline-weight: 700,
+    row-item-container-height: 34px,
+    row-item-label-text-color: $text,
+    row-item-label-text-size: 13px,
+    row-item-outline-color: $grid-separator,
+  ));
+  @include mat.paginator-overrides((
+    container-background-color: #fafafa,
+    container-text-color: #757575,
+    container-text-size: 12px,
+    container-size: 32px,
+    form-field-container-height: 28px,
+    form-field-container-vertical-padding: 4px,
+  ));
+  @include mat.dialog-overrides((
+    container-shape: 0,
+    container-color: $window-bg,
+    supporting-text-color: $text,
+    supporting-text-size: 13px,
+    supporting-text-tracking: normal,
+    subhead-color: #000,
+    subhead-size: 24px,
+    subhead-weight: 700,
+    subhead-tracking: normal,
+    subhead-line-height: 30px,
+  ));
+  @include mat.button-toggle-overrides((
+    shape: 14px,
+    height: 28px,
+    divider-color: transparent,
+    label-text-size: 12px,
+    label-text-tracking: normal,
+    text-color: $text,
+    selected-state-background-color: #eaf3ff,
+    selected-state-text-color: $main,
+  ));
+  @include mat.checkbox-overrides((label-text-size: 13px, label-text-tracking: normal));
+  @include mat.card-overrides((
+    elevated-container-color: #fff,
+    elevated-container-shape: 6px,
+    elevated-container-elevation: $card-shadow,
+    outlined-container-shape: 6px,
+    title-text-size: 14px,
+    title-text-weight: 700,
+    title-text-tracking: normal,
+    subtitle-text-size: 12px,
+    subtitle-text-tracking: normal,
+  ));
+  @include mat.tabs-overrides((
+    active-indicator-color: $main,
+    active-label-text-color: $main,
+    active-focus-label-text-color: $main,
+    active-hover-label-text-color: $main,
+    inactive-label-text-color: $text,
+    label-text-size: 13px,
+    label-text-tracking: normal,
+    container-height: 40px,
+  ));
+  @include mat.menu-overrides((item-label-text-size: 13px, item-label-text-tracking: normal, container-shape: 6px));
+}
+
+body {
+  color-scheme: light;
+  margin: 0;
+  height: 100%;
+  font-family: $font;
+  font-size: 13px;
+  color: $text;
+  background: $background;
+}
+
+.mat-mdc-form-field, .mat-mdc-select, .mat-mdc-option, .mat-mdc-button-base, .mat-mdc-table, .mat-mdc-paginator,
+.mat-mdc-tab, .mat-mdc-menu-item, .mat-mdc-dialog-content, .mat-mdc-card, .mat-mdc-list-item {
+  font-family: $font !important;
+}
+.mat-icon { font-family: 'Material Symbols Outlined'; }
+
+// ---------------------------------------------------------------- K4 elrendezés
+.k4main { display: flex; flex-direction: column; height: 100vh; background: $background; }
+.k4main-top {
+  background: #fff; border-radius: 6px; box-shadow: $card-shadow; margin: 10px 10px 0 10px;
+  display: flex; align-items: center; gap: 16px; min-height: 56px; max-height: 80px; flex-shrink: 0;
+}
+.k4main-bartop-left { display: flex; align-items: center; gap: 16px; }
+.k4main-bartop-center { flex: 1; display: flex; align-items: center; gap: 32px; justify-content: center; min-width: 0; }
+.k4main-bartop-right { display: flex; align-items: center; gap: 4px; padding: 8px; }
+.dms-logo { width: 25px; height: 24px; margin-left: 14px; display: flex; align-items: center; cursor: pointer; }
+.sysname { color: $text; font-size: 13px; white-space: nowrap; }
+.sysname b { font-weight: 600; }
+.appverzio { color: $text; font-size: 11px; opacity: 0.3; margin: 0 8px; white-space: nowrap; }
+.username { color: $text; font-size: 13px; margin-right: 4px; white-space: nowrap; }
+.dms-icon-btn {
+  width: 32px; height: 32px; border: none; background: transparent; cursor: pointer; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; color: $text;
+  &:hover { background: rgba(0, 0, 0, 0.1); }
+  .mat-icon { font-size: 20px; width: 20px; height: 20px; }
+}
+.avatar-btn {
+  width: 30px; height: 30px; border-radius: 50%; background: #50c4c4; border: none; cursor: pointer; color: #fff;
+  font-size: 13px; font-weight: 600; display: flex; align-items: center; justify-content: center; font-family: $font;
+}
+
+.k4main-bottom { display: flex; flex: 1; overflow: hidden; padding: 8px; gap: 8px; min-height: 0; }
+
+.k4main-fav-column {
+  width: 68px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; gap: 8px;
+  padding: 4px 0; overflow-y: auto;
+}
+.fav-item {
+  width: 68px; min-height: 72px; border: 1px solid transparent; background: transparent; cursor: pointer;
+  border-radius: 4px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+  padding: 4px; color: $text; font-size: 11px; text-align: center; font-weight: 400; font-family: $font;
+  text-decoration: none; box-sizing: border-box;
+  .mat-icon { font-size: 26px; width: 26px; height: 26px; }
+  &:hover { background: rgba(0, 0, 0, 0.05); .mat-icon { color: $main; } }
+  &.selected { background: #eaf3ff; color: $main; border-color: #bfddff; font-weight: 700; }
+}
+.fav-label { font-size: 11px; line-height: 1.2; max-width: 62px; display: block; overflow: hidden; hyphens: auto; }
+
+.k4main-left {
+  width: 230px; flex-shrink: 0; background: #fff; border-radius: 6px; box-shadow: $card-shadow;
+  display: flex; flex-direction: column; overflow: hidden;
+}
+.k4main-menu { flex: 1; overflow-y: auto; padding: 6px 0 6px 6px; }
+.area-navbar-group { margin-bottom: 6px; }
+.group-title { padding: 2px 8px; margin-left: 8px; font-size: 13px; font-weight: 700; color: $text; line-height: 24px; }
+.lbitem {
+  width: calc(100% - 6px); border: none; background: transparent; cursor: pointer; display: flex; align-items: center;
+  gap: 8px; padding: 0 8px; height: 28px; margin-right: 6px; text-align: left; color: $text; font-size: 13px;
+  border-radius: 14px; text-decoration: none; box-sizing: border-box; font-family: $font;
+  .mat-icon { font-size: 18px; width: 18px; height: 18px; flex-shrink: 0; opacity: 0.7; }
+  &:hover { background: rgba(0, 0, 0, 0.05); }
+  &.selected { background: $main; color: #fff; .mat-icon { opacity: 1; } }
+}
+.lbitem-text { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+// A jobb oldali munkaterület: a routolt oldal oszlopként, saját görgetéssel
+.k4main-right { flex: 1; min-width: 0; overflow: auto; display: flex; flex-direction: column; background: $background; }
+.k4main-right > router-outlet + * { display: flex; flex-direction: column; flex: 1 0 auto; min-width: 0; }
+.k4main-right > router-outlet + * > a.mat-mdc-button-base, .k4main-right > router-outlet + * > button { align-self: flex-start; margin-bottom: 4px; }
+.mat-mdc-card-content .form-item { max-width: 520px; }
+.mat-mdc-card-actions { padding: 8px 16px 16px !important; gap: 8px; }
+
+// ---------------------------------------------------------------- Lista oldal blokk-sorrend
+// Szűrőkártya (grid-filterform) → action bar (cím + gombok) → grid → státuszsor (lapozó)
+.k4main-right > router-outlet + * > .filters { order: -2; }
+.k4main-right > router-outlet + * > .page-header { order: -1; }
+
+.filters, .grid-filterform {
+  background: #fff; border-radius: 6px; box-shadow: $card-shadow; margin: 0 0 8px; padding: 7px 8px;
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px 32px; flex-shrink: 0;
+  > .form-item, > app-user-picker, > app-partner-picker {
+    flex: 1 1 calc(50% - 120px); min-width: 280px; max-width: calc(50% - 16px);
+  }
+  > .form-item, app-user-picker .form-item, app-partner-picker .form-item {
+    display: grid; grid-template-columns: 135px minmax(0, 1fr); align-items: center; column-gap: 8px;
+    > .form-label { line-height: 28px; font-size: 12px; color: $text; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    > .form-label:after { content: ':'; }
+  }
+  > button, > a.mat-mdc-button-base { margin-left: auto; }
+  > button ~ button { margin-left: 0; }
+  .mat-mdc-checkbox, .mat-mdc-slide-toggle { font-size: 12px; }
+}
+
+.page-header {
+  background: #fff; min-height: 40px; display: flex; align-items: center; gap: 8px; padding: 0 8px 0 12px;
+  border-bottom: 1px solid #f0f0f0; border-radius: 6px 6px 0 0; flex-shrink: 0; flex-wrap: wrap;
+  h1, h2 { font-size: 14px; font-weight: 700; margin: 0; flex: 1; color: $text; }
+}
+.page-header + .mat-mdc-table, .page-header ~ .mat-mdc-table { border-radius: 0; }
+
+h1 { font-size: 16px; font-weight: 600; margin: 4px 0 12px; color: $text; }
+
+// Önálló oldalcím (nincs page-header): fehér sáv; listaoldalon a grid fölé tapad, űrlapoldalon külön kártya
+.k4main-right > router-outlet + * > h1 {
+  order: -1; background: #fff; font-size: 14px; font-weight: 700; margin: 0 0 8px; padding: 0 12px;
+  min-height: 40px; display: flex; align-items: center; border-radius: 6px; box-shadow: $card-shadow; flex-shrink: 0;
+  &:has(~ .mat-mdc-table, ~ .mat-button-toggle-group, ~ .mat-mdc-tab-group) {
+    margin-bottom: 0; border-radius: 6px 6px 0 0; box-shadow: none; border-bottom: 1px solid #f0f0f0;
+  }
+}
+// Szűrő-kapcsolók (pl. Bontásra vár / Iktatásra vár) DMS action bar pill-gombként
+.k4main-right .mat-button-toggle-group {
+  background: #fff; border: none; border-radius: 0; padding: 6px 8px; gap: 2px; box-shadow: none;
+  border-bottom: 1px solid #f0f0f0; flex-shrink: 0;
+  .mat-button-toggle { border: none !important; border-radius: 14px; }
+  .mat-button-toggle-checkbox-wrapper { display: none; }
+  .mat-button-toggle-appearance-standard .mat-button-toggle-label-content { padding: 0 12px; }
+}
+h2 { font-size: 14px; font-weight: 700; margin: 8px 0; color: $text; }
+h3 { font-size: 13px; font-weight: 700; margin: 8px 0 4px; }
+
+// Grid
+.mat-mdc-table {
+  background: #fff;
+  .mat-mdc-header-cell { border-right: 1px solid #f0f0f0; white-space: nowrap; padding: 0 10px; }
+  .mat-mdc-header-cell:last-child, .mat-mdc-cell:last-child { border-right: none; }
+  .mat-mdc-cell { padding: 0 10px; border-right: 1px solid #f5f5f5; }
+  .mat-mdc-row:hover { background: $item-hover; }
+  .mat-mdc-row.selected { background: $item-selected; }
+  .mat-mdc-header-row { position: sticky; top: 0; z-index: 1; }
+  .mat-mdc-icon-button { --mat-icon-button-state-layer-size: 28px; }
+}
+.mat-mdc-paginator {
+  border-top: 1px solid $grid-separator; border-radius: 0 0 6px 6px;
+  .mat-mdc-paginator-container { min-height: 32px; padding: 0 8px; }
+}
+.mat-mdc-table + .mat-mdc-paginator { margin-bottom: 8px; }
+table.simple {
+  border-collapse: collapse; background: #fff;
+  th { font-weight: 700; background: #fff; }
+  th, td { border-bottom: 1px solid $grid-separator; padding: 6px 10px; text-align: left; }
+}
+
+// Mezők: DMS címke a mező fölött
+.form-item { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.form-item > .form-label { font-size: 13px; color: #000; }
+.form-item > .mat-mdc-form-field { width: 100%; }
+.form-item.wide { min-width: 360px; }
+.form-item.full, .full { width: 100%; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 32px; }
+.form-grid .span2 { grid-column: span 2; }
+.form-col, .mat-mdc-card-content.form-col { display: flex; flex-direction: column; gap: 12px; min-width: 360px; }
+.mat-mdc-form-field { --mat-form-field-container-text-font: #{$font}; }
+.mat-mdc-form-field .mat-mdc-form-field-icon-suffix, .mat-mdc-form-field .mat-mdc-form-field-icon-prefix {
+  .mat-mdc-icon-button { --mat-icon-button-state-layer-size: 26px; padding: 1px; }
+  .mat-icon { font-size: 18px; width: 18px; height: 18px; }
+}
+.mat-mdc-text-field-wrapper { background: #fff; }
+
+// Kártyák (űrlap-blokkok)
+.mat-mdc-card { box-shadow: $card-shadow; border-radius: 6px; margin-bottom: 8px; }
+.form-card { max-width: 760px; }
+.result { border-left: 4px solid $main; }
+
+// Gombok ikonjai
+.mat-mdc-button-base .mat-icon { font-size: 16px; width: 16px; height: 16px; }
+.mat-mdc-unelevated-button:not(:disabled):hover { background: $main-hover; }
+.mat-mdc-outlined-button:not(:disabled):hover { color: $main; border-color: $main; }
+
+// Modal: DMS ablak (éles sarkok, magas címsor, világos maszk)
+.cdk-overlay-dark-backdrop { background: rgba(217, 217, 217, 0.4); }
+.mat-mdc-dialog-container {
+  .mat-mdc-dialog-surface { box-shadow: 0 12px 50px rgba(0, 0, 0, 0.2); }
+  .mat-mdc-dialog-title {
+    background: $window-title; min-height: 96px; box-sizing: border-box; display: flex; align-items: center;
+    margin: 0; padding: 0 40px; font-size: 24px; font-weight: 700; color: #000; line-height: 1.2; font-family: $font;
+    &::before { display: none; }
+  }
+  .mat-mdc-dialog-content { padding: 20px 40px !important; background: $window-bg; max-height: 70vh; }
+  .mat-mdc-dialog-actions { padding: 24px 40px 30px; background: $window-bg; gap: 8px; }
+}
+
+// Fülek
+.mat-mdc-tab-group { background: transparent; }
+.mat-mdc-tab-header { background: #fff; border-radius: 6px 6px 0 0; border-bottom: 2px solid #e0e0e0; }
+
+// Kezdőlap csempék
+.tiles { display: flex; flex-wrap: wrap; gap: 8px; }
+.tile {
+  width: 150px; min-height: 96px; cursor: pointer; text-align: center; background: #fff; border-radius: 6px;
+  box-shadow: $card-shadow; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+  padding: 12px; box-sizing: border-box; color: $text; text-decoration: none; font-size: 13px;
+  .mat-icon { font-size: 30px; width: 30px; height: 30px; color: $main; }
+  &:hover { background: #eaf3ff; }
+}
+.welcome { background: #fff; border-radius: 6px; box-shadow: $card-shadow; padding: 16px 20px; margin-bottom: 8px; }
+
+// Állapot jelvények
+.badge { display: inline-block; padding: 0 8px; border-radius: 10px; font-size: 11px; font-weight: 600; line-height: 18px; white-space: nowrap; }
+.badge-ok { background: rgba(81, 163, 81, 0.15); color: #3d7d3d; }
+.badge-err { background: rgba(237, 52, 47, 0.12); color: $error; }
+.badge-warn { background: rgba(250, 198, 0, 0.25); color: $text; }
+.badge-off { background: #eeeeee; color: #757575; }
+
+// Belépés / tenant választó
+.center-page { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: $background; }
+.narrow { width: 420px; }
+.login-logo { display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+
+// Segédosztályok
+.muted { color: #757575; }
+.error-text { color: $error; }
+.spacer { flex: 1 1 auto; }
+.row { display: flex; gap: 12px; align-items: flex-end; }
+.row > app-user-picker, .row > app-partner-picker { flex: 1; }
+.actions { text-align: right; white-space: nowrap; }
+pre.secret { padding: 12px; background: #f5f5f5; border: 1px solid $grid-separator; user-select: all; white-space: pre-wrap; word-break: break-all; }
+.snack-error { --mat-snack-bar-container-color: #{$error}; --mat-snack-bar-supporting-text-color: #fff; }
+
+// Linkek (pl. tenant kód a gridben)
+.mat-mdc-table a, .k4main-right a:not(.mat-mdc-button-base):not(.tile) { color: $main; text-decoration: none; &:hover { text-decoration: underline; } }

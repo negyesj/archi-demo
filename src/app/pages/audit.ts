@@ -19,11 +19,11 @@ interface Row { id: number; occurredAt: string; actorId: string; actorName: stri
   template: `
     <h1>Admin audit napló</h1>
     <div class="filters">
-      <mat-form-field><mat-label>Ettől</mat-label><input matInput [matDatepicker]="d1" [(ngModel)]="from" /><mat-datepicker-toggle matIconSuffix [for]="d1" /><mat-datepicker #d1 /></mat-form-field>
-      <mat-form-field><mat-label>Eddig</mat-label><input matInput [matDatepicker]="d2" [(ngModel)]="to" /><mat-datepicker-toggle matIconSuffix [for]="d2" /><mat-datepicker #d2 /></mat-form-field>
-      <mat-form-field><mat-label>Végrehajtó (felhasználónév)</mat-label><input matInput [(ngModel)]="actor" /></mat-form-field>
-      <mat-form-field><mat-label>Művelet</mat-label><input matInput [(ngModel)]="action" placeholder="pl. TENANT_CREATE" /></mat-form-field>
-      <mat-form-field><mat-label>Cél azonosító (pl. tenant kód)</mat-label><input matInput [(ngModel)]="targetId" /></mat-form-field>
+      <div class="form-item"><label class="form-label">Ettől</label><mat-form-field><input matInput [matDatepicker]="d1" [(ngModel)]="from" /><mat-datepicker-toggle matIconSuffix [for]="d1" /><mat-datepicker #d1 /></mat-form-field></div>
+      <div class="form-item"><label class="form-label">Eddig</label><mat-form-field><input matInput [matDatepicker]="d2" [(ngModel)]="to" /><mat-datepicker-toggle matIconSuffix [for]="d2" /><mat-datepicker #d2 /></mat-form-field></div>
+      <div class="form-item"><label class="form-label">Végrehajtó (felhasználónév)</label><mat-form-field><input matInput [(ngModel)]="actor" /></mat-form-field></div>
+      <div class="form-item"><label class="form-label">Művelet</label><mat-form-field><input matInput [(ngModel)]="action" placeholder="pl. TENANT_CREATE" /></mat-form-field></div>
+      <div class="form-item"><label class="form-label">Cél azonosító (pl. tenant kód)</label><mat-form-field><input matInput [(ngModel)]="targetId" /></mat-form-field></div>
       <button mat-flat-button (click)="load()"><mat-icon>search</mat-icon> Keresés</button>
     </div>
     <table mat-table [dataSource]="rows()" class="full">
